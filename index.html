@@ -102,6 +102,7 @@
             width: 72px; height: 72px; border-radius: 18px;
             object-fit: cover; margin-bottom: 20px;
             box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            background: var(--line);
         }
         .login-card h1 { font-size: 24px; font-weight: 800; color: var(--text); margin-bottom: 6px; letter-spacing: -0.5px; }
         .login-card p { font-size: 13px; color: var(--text-dim); margin-bottom: 28px; font-weight: 500; }
@@ -166,8 +167,11 @@
             width: 44px; height: 44px; border-radius: 12px;
             background: #333; overflow: hidden;
             box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+            display: flex; justify-content: center; align-items: center;
         }
         .game-icon img { width: 100%; height: 100%; object-fit: cover; }
+        /* Fallback if image fails */
+        .game-icon::after { content: 'FF'; color: #fff; font-weight: 800; font-size: 16px; position: absolute; z-index: -1; }
 
         .top-actions {
             display: flex; gap: 12px; align-items: center;
@@ -281,24 +285,25 @@
             gap: 10px;
             margin-top: auto;
             flex-shrink: 0;
+            padding-top: 20px;
         }
         .btn-exploit {
             flex: 1;
             border: none;
             background: var(--accent);
             color: var(--btn-text);
-            padding: 18px 8px;
+            padding: 16px 8px;
             border-radius: 18px;
             font-size: 14px;
             font-weight: 800;
             cursor: pointer;
             transition: 0.2s;
-            display: flex; align-items: center; justify-content: center; gap: 8px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
             box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-            line-height: 1.2;
             text-align: center;
             letter-spacing: 0.5px;
         }
+        .btn-exploit span { font-size: 11px; font-weight: 600; opacity: 0.8; }
         .btn-exploit.max {
             background: var(--accent-deep);
             color: #fff;
@@ -314,13 +319,14 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center; /* Center items vertically */
             padding: 24px 0;
             z-index: 10;
             border-left: 1px solid var(--line);
             transition: background 0.3s;
         }
         .sidebar-nav {
-            display: flex; flex-direction: column; gap: 20px; width: 100%;
+            display: flex; flex-direction: column; gap: 24px; width: 100%;
         }
         .nav-item {
             display: flex; flex-direction: column; align-items: center;
@@ -399,7 +405,8 @@
                     <div class="top-left">
                         <div class="time-badge" id="clock">12:20</div>
                         <div class="game-icon">
-                            <img src="https://play-lh.googleusercontent.com/4P1S0t8b6K1T2y4x8s9n4w0q2y6m5w1b2x3n4m5v6c7b8n9m0v1c2b3n4m5v6c7b8" alt="Free Fire">
+                            <!-- Fallback image for Free Fire -->
+                            <img src="https://upload.wikimedia.org/wikipedia/en/9/9c/Garena_Free_Fire_logo.png" alt="Free Fire" onerror="this.style.display='none'">
                         </div>
                     </div>
                     <div class="top-actions">
@@ -526,10 +533,10 @@
                 <!-- Bottom Buttons -->
                 <div class="bottom-actions">
                     <button class="btn-exploit" id="exploitNormalBtn" onclick="executeExploit('normal')">
-                        EXPLOIT<br>NORMAL
+                        EXPLOIT <span>NORMAL</span>
                     </button>
                     <button class="btn-exploit max" id="exploitMaxBtn" onclick="executeExploit('max')">
-                        EXPLOIT<br>MAX
+                        EXPLOIT <span>MAX</span>
                     </button>
                 </div>
             </div>

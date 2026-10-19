@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#000000">
+    <title>Aims - iOS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        :root {
+            /* Default: Black Theme */
+            --bg: #000000;
+            --card: #1c1c1e;
+            --text: #ffffff;
+            --text-dim: #8e8e93;
+            --accent: #30d158; 
+            --accent-deep: #248a3d;
+            --line: #2c2c2e;
+            --input-bg: #1c1c1e;
+            --sidebar-bg: #0a0a0a;
+            --btn-text: #000000;
+            --badge-bg: #ff453a;
+            --icon-bg: rgba(48, 209, 88, 0.15);
+        }
+
+        [data-theme="purple"] {
+            --bg: #07000f;
+            --card: #170828;
+            --text: #ffffff;
+            --text-dim: #a58bb0;
+            --accent: #9d4edd;
+            --accent-deep: #5a189a;
+            --line: #33254a;
+            --input-bg: #0b0512;
+            --sidebar-bg: #0d0418;
+            --btn-text: #ffffff;
+            --badge-bg: #9d4edd;
+            --icon-bg: rgba(157, 78, 221, 0.15);
+        }
+
+        html, body {
+            width: 100%; height: 100%; overflow: hidden;
+            background: #111;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            transition: background 0.3s;
+        }
+
+        h1, h2, h3, h4, .btn, .nav-label {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .app-container {
+            width: 100%; height: 100%;
+            max-width: 900px;
+            max-height: 100vh;
+            background: var(--bg);
+            position: relative;
+            display: flex;
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            transition: background 0.3s;
+        }
+
+        @media (min-aspect-ratio: 1/1) {
+            .app-container {
+                border-radius: 24px;
+                height: 95vh;
+                max-height: 700px;
+                border: 1px solid var(--line);
+            }
+        }
+
+        /* SVG Icons */
+        svg { stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        .icon-sm { width: 18px; height: 18px; }
+        .icon-md { width: 24px; height: 24px; }
+
+        /* ============ LOGIN OVERLAY ============ */
+        #loginScreen {
+            position: absolute; inset: 0; z-index: 100;
+            background: var(--bg);
+            display: flex; justify-content: center; align-items: center;
+            padding: 20px;
+            transition: opacity 0.4s ease, background 0.3s;
+        }
+        .login-card {
+            background: var(--card);
+            border-radius: 24px;
+            padding: 32px 24px;
+            width: 100%; max-width: 340px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            text-align: center;
+            border: 1px solid var(--line);
+        }
+        .login-card img {
+            width: 72px; height: 72px; border-radius: 18px;
+            object-fit: cover; margin-bottom: 20px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        }
+        .login-card h1 { font-size: 24px; font-weight: 800; color: var(--text); margin-bottom: 6px; letter-spacing: -0.5px; }
+        .login-card p { font-size: 13px; color: var(--text-dim); margin-bottom: 28px; font-weight: 500; }
+        
+        .input-wrap {
+            background: var(--input-bg);
+            border-radius: 14px;
+            padding: 14px;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--line);
+        }
+        .input-wrap input {
+            border: none; background: transparent;
+            width: 100%; text-align: center;
+            font-size: 15px; font-weight: 600; color: var(--text);
+            outline: none; letter-spacing: 1px;
+        }
+        .input-wrap input::placeholder { color: var(--text-dim); font-weight: 500; letter-spacing: 0; }
+        
+        .btn-main {
+            width: 100%; border: none;
+            background: var(--accent); color: var(--btn-text);
+            padding: 16px; border-radius: 14px;
+            font-size: 15px; font-weight: 700;
+            cursor: pointer; transition: 0.2s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .btn-main:hover { filter: brightness(1.1); transform: translateY(-1px); }
+        .btn-main:disabled { background: var(--line); color: var(--text-dim); box-shadow: none; cursor: not-allowed; transform: none; }
+
+        /* ============ MAIN LAYOUT ============ */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 20px 12px 20px 24px;
+            overflow-y: auto;
+            position: relative;
+            z-index: 10;
+        }
+        .main-content::-webkit-scrollbar { width: 0; }
+
+        /* Top Left / Header */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 24px;
+        }
+        .top-left { display: flex; flex-direction: column; gap: 12px; }
+        .time-badge {
+            background: var(--badge-bg); color: #fff;
+            padding: 5px 12px; border-radius: 8px;
+            font-size: 12px; font-weight: 700; letter-spacing: 0.5px;
+            align-self: flex-start;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            font-family: 'Inter', sans-serif;
+        }
+        .game-icon {
+            width: 44px; height: 44px; border-radius: 12px;
+            background: #333; overflow: hidden;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+        }
+        .game-icon img { width: 100%; height: 100%; object-fit: cover; }
+
+        .top-actions {
+            display: flex; gap: 12px; align-items: center;
+        }
+        .action-icon {
+            width: 40px; height: 40px;
+            background: var(--card); border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            color: var(--text);
+            cursor: pointer;
+            border: 1px solid var(--line);
+            transition: 0.2s;
+        }
+        .action-icon:hover { background: var(--line); }
+        .action-icon:active { transform: scale(0.95); }
+
+        /* Titles */
+        .hero-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        .hero-title h2 { font-size: 34px; font-weight: 900; color: var(--text); letter-spacing: -1px; }
+        .status-pill {
+            background: var(--icon-bg); color: var(--accent);
+            padding: 5px 10px; border-radius: 8px;
+            font-size: 10px; font-weight: 800;
+            display: flex; align-items: center; gap: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-family: 'Outfit', sans-serif;
+        }
+        .status-pill::before { content: ''; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; }
+        
+        .subtitle { font-size: 13px; color: var(--text-dim); font-weight: 500; margin-bottom: 28px; }
+
+        /* Sections */
+        .section-title {
+            font-size: 11px; font-weight: 700; color: var(--text-dim);
+            text-transform: uppercase; letter-spacing: 1px;
+            margin-bottom: 14px;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* Feature Cards */
+        .feature-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+        .feature-card {
+            background: var(--card);
+            border-radius: 18px;
+            padding: 16px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: transform 0.1s, border-color 0.2s;
+            border: 1px solid transparent;
+        }
+        .feature-card:active { transform: scale(0.98); }
+        .feature-card.active { border-color: var(--line); }
+        
+        .fc-info h4 { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+        .fc-info p { font-size: 12px; color: var(--text-dim); font-weight: 400; line-height: 1.4; }
+
+        /* iOS Toggle */
+        .toggle {
+            width: 48px; height: 28px;
+            background: var(--line);
+            border-radius: 20px;
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            flex-shrink: 0;
+            margin-left: 12px;
+        }
+        .toggle::after {
+            content: ''; position: absolute;
+            width: 24px; height: 24px;
+            background: #fff; border-radius: 50%;
+            top: 2px; left: 2px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .feature-card.active .toggle { background: var(--accent); }
+        .feature-card.active .toggle::after { transform: translateX(20px); }
+
+        /* File Inject Card */
+        .file-card {
+            background: var(--card); border-radius: 18px; padding: 20px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+            border: 2px dashed var(--line);
+            text-align: center;
+            transition: 0.2s;
+        }
+        .file-card.dragover { border-color: var(--accent); background: var(--icon-bg); }
+        .file-icon { color: var(--accent); margin-bottom: 12px; display: flex; justify-content: center; }
+        .file-label { font-size: 14px; font-weight: 600; color: var(--text); }
+        .file-label span { color: var(--accent); cursor: pointer; font-weight: 700; }
+        .file-name { font-size: 12px; color: var(--text-dim); margin-top: 6px; word-break: break-all; }
+
+        /* Big Bottom Buttons */
+        .bottom-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: auto;
+            flex-shrink: 0;
+        }
+        .btn-exploit {
+            flex: 1;
+            border: none;
+            background: var(--accent);
+            color: var(--btn-text);
+            padding: 18px 8px;
+            border-radius: 18px;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            line-height: 1.2;
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+        .btn-exploit.max {
+            background: var(--accent-deep);
+            color: #fff;
+        }
+        .btn-exploit:hover { filter: brightness(1.1); transform: translateY(-1px); }
+        .btn-exploit:active { transform: scale(0.98); }
+        .btn-exploit:disabled { background: var(--line); color: var(--text-dim); box-shadow: none; cursor: not-allowed; transform: none; }
+
+        /* ============ SIDEBAR (Right Rail) ============ */
+        .sidebar {
+            width: 76px;
+            background: var(--sidebar-bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 24px 0;
+            z-index: 10;
+            border-left: 1px solid var(--line);
+            transition: background 0.3s;
+        }
+        .sidebar-nav {
+            display: flex; flex-direction: column; gap: 20px; width: 100%;
+        }
+        .nav-item {
+            display: flex; flex-direction: column; align-items: center;
+            gap: 6px; color: var(--text-dim); cursor: pointer; transition: 0.2s;
+            padding: 8px 0;
+            width: 100%;
+        }
+        .nav-item.active { color: var(--accent); }
+        .nav-icon {
+            width: 42px; height: 42px;
+            border-radius: 14px;
+            display: flex; justify-content: center; align-items: center;
+            transition: 0.2s;
+        }
+        .nav-item.active .nav-icon { background: var(--icon-bg); }
+        .nav-label { font-size: 10px; font-weight: 700; }
+
+        /* ============ LOADING ============ */
+        #loadingScreen {
+            position: absolute; inset: 0; background: rgba(0,0,0,0.85);
+            display: none; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 999; backdrop-filter: blur(8px);
+        }
+        .spinner {
+            width: 44px; height: 44px;
+            border: 4px solid var(--line); border-top: 4px solid var(--accent);
+            border-radius: 50%; animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .loading-text { font-size: 15px; font-weight: 700; color: var(--text); font-family: 'Outfit', sans-serif; letter-spacing: 0.5px; }
+
+        /* ============ TOAST ============ */
+        .toast {
+            position: absolute; top: 24px; left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            background: var(--text); color: var(--bg);
+            padding: 12px 24px; border-radius: 24px;
+            font-size: 13px; font-weight: 700;
+            opacity: 0; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); z-index: 1000; pointer-events: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            font-family: 'Inter', sans-serif;
+        }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .toast.error { background: #ff453a; color: #fff; }
+
+        /* Sections */
+        .section { display: none; animation: fadeIn 0.3s ease; }
+        .section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+    </style>
+</head>
+<body data-theme="black">
+
+    <div class="app-container">
+        <!-- LOGIN -->
+        <div id="loginScreen">
+            <div class="login-card">
+                <img src="IMG-20260806-WA0000.jpg" alt="Logo">
+                <h1>QZZ Panel</h1>
+                <p>iOS Premium Access</p>
+                <div class="input-wrap">
+                    <input type="text" id="keyInput" placeholder="Digite sua key" autocomplete="off">
+                </div>
+                <button class="btn-main" id="loginBtn">Entrar</button>
+            </div>
+        </div>
+
+        <!-- MAIN APP -->
+        <div id="mainApp" style="display: none; width: 100%; height: 100%;">
+            <div class="main-content">
+                <!-- Top -->
+                <div class="top-bar">
+                    <div class="top-left">
+                        <div class="time-badge" id="clock">12:20</div>
+                        <div class="game-icon">
+                            <img src="https://play-lh.googleusercontent.com/4P1S0t8b6K1T2y4x8s9n4w0q2y6m5w1b2x3n4m5v6c7b8n9m0v1c2b3n4m5v6c7b8" alt="Free Fire">
+                        </div>
+                    </div>
+                    <div class="top-actions">
+                        <!-- THEME TOGGLE -->
+                        <div class="action-icon" id="themeToggle" onclick="toggleTheme()">
+                            <svg class="icon-sm" viewBox="0 0 24 24" id="themeIcon"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+                        </div>
+                        <!-- SETTINGS -->
+                        <div class="action-icon">
+                            <svg class="icon-sm" viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dynamic Content Area -->
+                <div id="contentArea">
+                    <!-- FUNCTIONS SECTION -->
+                    <div class="section active" id="sec-funcoes">
+                        <div class="hero-title">
+                            <h2>Funções</h2>
+                            <div class="status-pill">Ativo</div>
+                        </div>
+                        <div class="subtitle">Free Fire Normal • com.dts.freefireth</div>
+
+                        <div class="section-title">FUNÇÕES CACHE</div>
+                        <div class="feature-list">
+                            <div class="feature-card active" onclick="toggleCard(this)">
+                                <div class="fc-info">
+                                    <h4>Remover tremedeira</h4>
+                                    <p>Estabilização de mira</p>
+                                </div>
+                                <div class="toggle"></div>
+                            </div>
+                            <div class="feature-card" onclick="toggleCard(this)">
+                                <div class="fc-info">
+                                    <h4>Reduzir recoil</h4>
+                                    <p>Controle de recuo</p>
+                                </div>
+                                <div class="toggle"></div>
+                            </div>
+                            <div class="feature-card active" onclick="toggleCard(this)">
+                                <div class="fc-info">
+                                    <h4>Modo desempenho</h4>
+                                    <p>Otimização de performance</p>
+                                </div>
+                                <div class="toggle"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- LAG SECTION -->
+                    <div class="section" id="sec-lag">
+                        <div class="hero-title">
+                            <h2>Lag</h2>
+                            <div class="status-pill">Otimizar</div>
+                        </div>
+                        <div class="subtitle">Redução de ping e estabilidade</div>
+
+                        <div class="section-title">OTIMIZAÇÃO</div>
+                        <div class="feature-list">
+                            <div class="feature-card active" onclick="toggleCard(this)">
+                                <div class="fc-info">
+                                    <h4>Reduzir lag</h4>
+                                    <p>Otimização de rede</p>
+                                </div>
+                                <div class="toggle"></div>
+                            </div>
+                            <div class="feature-card" onclick="toggleCard(this)">
+                                <div class="fc-info">
+                                    <h4>Travar em 60 FPS</h4>
+                                    <p>Estabilidade de quadros</p>
+                                </div>
+                                <div class="toggle"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FILES SECTION -->
+                    <div class="section" id="sec-arquivos">
+                        <div class="hero-title">
+                            <h2>Arquivos</h2>
+                            <div class="status-pill" style="background:rgba(255,159,10,0.15);color:#ff9f0a;">Upload</div>
+                        </div>
+                        <div class="subtitle">Injete arquivos ZIP customizados</div>
+
+                        <div class="section-title">SELECIONE O ARQUIVO</div>
+                        <div class="file-card" id="zipArea">
+                            <div class="file-icon">
+                                <svg class="icon-md" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                            </div>
+                            <div class="file-label">Arraste ou <span id="zipTrigger">selecione</span> um .zip</div>
+                            <div class="file-name" id="zipName"></div>
+                            <input type="file" id="zipInput" accept=".zip" style="display:none">
+                        </div>
+                        <button class="btn-main" id="zipInjectBtn" disabled style="margin-top:10px;">Injetar Arquivo</button>
+                    </div>
+
+                    <!-- SETTINGS SECTION -->
+                    <div class="section" id="sec-conta">
+                        <div class="hero-title">
+                            <h2>Conta</h2>
+                        </div>
+                        <div class="subtitle">Informações da licença</div>
+                        
+                        <div class="section-title">STATUS</div>
+                        <div class="feature-list">
+                            <div class="feature-card" style="cursor:default;">
+                                <div class="fc-info">
+                                    <h4>Expira em</h4>
+                                    <p id="expirationDate">Carregando...</p>
+                                </div>
+                            </div>
+                            <div class="feature-card" style="cursor:default;">
+                                <div class="fc-info">
+                                    <h4>Tempo Restante</h4>
+                                    <p id="daysLeft">--</p>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn-main" onclick="logout()" style="background:transparent; color:#ff453a; border:1px solid #ff453a; box-shadow:none; margin-top:20px;">Sair da Conta</button>
+                    </div>
+                </div>
+
+                <!-- Bottom Buttons -->
+                <div class="bottom-actions">
+                    <button class="btn-exploit" id="exploitNormalBtn" onclick="executeExploit('normal')">
+                        EXPLOIT<br>NORMAL
+                    </button>
+                    <button class="btn-exploit max" id="exploitMaxBtn" onclick="executeExploit('max')">
+                        EXPLOIT<br>MAX
+                    </button>
+                </div>
+            </div>
+
+            <!-- RIGHT SIDEBAR -->
+            <div class="sidebar">
+                <div class="sidebar-nav">
+                    <div class="nav-item active" onclick="switchTab('funcoes', this)">
+                        <div class="nav-icon">
+                            <svg class="icon-md" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4"></circle><line x1="12" y1="2" x2="12" y2="4"></line><line x1="12" y1="20" x2="12" y2="22"></line><line x1="2" y1="12" x2="4" y2="12"></line><line x1="20" y1="12" x2="22" y2="12"></line></svg>
+                        </div>
+                        <span class="nav-label">Funções</span>
+                    </div>
+                    <div class="nav-item" onclick="switchTab('lag', this)">
+                        <div class="nav-icon">
+                            <svg class="icon-md" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                        </div>
+                        <span class="nav-label">Lag</span>
+                    </div>
+                    <div class="nav-item" onclick="switchTab('arquivos', this)">
+                        <div class="nav-icon">
+                            <svg class="icon-md" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+                        </div>
+                        <span class="nav-label">Arquivos</span>
+                    </div>
+                    <div class="nav-item" onclick="switchTab('conta', this)">
+                        <div class="nav-icon">
+                            <svg class="icon-md" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        </div>
+                        <span class="nav-label">Conta</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">Mensagem</div>
+    <div id="loadingScreen">
+        <div class="spinner"></div>
+        <div class="loading-text" id="loadingText">Executando exploit...</div>
+    </div>
+
+    <script>
+        // ==========================================
+        // THEME SWITCHER
+        // ==========================================
+        function toggleTheme() {
+            const body = document.body;
+            const current = body.getAttribute('data-theme');
+            const next = current === 'black' ? 'purple' : 'black';
+            body.setAttribute('data-theme', next);
+            localStorage.setItem('qzz_theme', next);
+            
+            // Swap icon to sun if purple, moon if black
+            const icon = document.getElementById('themeIcon');
+            if (next === 'purple') {
+                icon.innerHTML = '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>';
+            } else {
+                icon.innerHTML = '<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>';
+            }
+        }
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('qzz_theme') || 'black';
+        document.body.setAttribute('data-theme', savedTheme);
+        if (savedTheme === 'purple') {
+            setTimeout(() => toggleTheme(), 100); // flip icon
+        }
+
+        // ==========================================
+        // CONFIG & AUTH
+        // ==========================================
+        const API_BASE = 'https://qzz-backend.onrender.com';
+        const BLOCKED_KEYS = ['QZZ-H7N4K2-P9RX','QZZ-B3V8M6-T5QW','QZZ-X2D9L7-C4KP','QZZ-R6T3F8-N2VM','QZZ-M5K9P4-W7XD'].map(k => k.toLowerCase());
+        
+        let currentKey = null;
+        let countdownInterval = null;
+        let sessionCheckInterval = null;
+        const TOKEN_STORAGE = 'qzz_token';
+        const EXPIRY_STORAGE = 'qzz_expiry';
+
+        function getBrowserHwid() {
+            let hwid = localStorage.getItem('qzz_hwid');
+            if (!hwid) {
+                hwid = crypto.randomUUID ? crypto.randomUUID() : 'web-' + Date.now();
+                localStorage.setItem('qzz_hwid', hwid);
+            }
+            return hwid;
+        }
+
+        async function validateKey(code) {
+            const norm = code.trim().toLowerCase();
+            if (BLOCKED_KEYS.includes(norm)) {
+                showToast('Key bloqueada', 'error');
+                return false;
+            }
+            try {
+                const resp = await fetch(API_BASE + '/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ key: code, hwid: getBrowserHwid() })
+                });
+                const data = await resp.json();
+                if (!data.success) {
+                    showToast(data.message || 'Key inválida', 'error');
+                    return false;
+                }
+                localStorage.setItem(TOKEN_STORAGE, data.token);
+                localStorage.setItem(EXPIRY_STORAGE, String(data.expiresAt));
+                currentKey = { key: code, expiry: new Date(data.expiresAt) };
+                showToast('Acesso liberado', '');
+                return true;
+            } catch (e) {
+                showToast('Erro de conexão', 'error');
+                return false;
+            }
+        }
+
+        async function restoreSession() {
+            const token = localStorage.getItem(TOKEN_STORAGE);
+            const expiry = localStorage.getItem(EXPIRY_STORAGE);
+            if (!token || !expiry) return false;
+            const expDate = new Date(Number(expiry));
+            if (isNaN(expDate.getTime()) || expDate <= new Date()) {
+                localStorage.removeItem(TOKEN_STORAGE);
+                localStorage.removeItem(EXPIRY_STORAGE);
+                return false;
+            }
+            try {
+                const resp = await fetch(API_BASE + '/api/auth/session', {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                const data = await resp.json();
+                if (!data.success) {
+                    localStorage.removeItem(TOKEN_STORAGE);
+                    localStorage.removeItem(EXPIRY_STORAGE);
+                    return false;
+                }
+                currentKey = { key: 'sessao', expiry: data.expiresAt ? new Date(data.expiresAt) : expDate };
+                return true;
+            } catch (e) {
+                currentKey = { key: 'sessao', expiry: expDate };
+                return true;
+            }
+        }
+
+        function updateExpiryUI(expiry) {
+            if (!expiry) return;
+            document.getElementById('expirationDate').textContent = expiry.toLocaleDateString('pt-BR');
+            const diff = expiry - Date.now();
+            const d = Math.floor(diff / 86400000);
+            document.getElementById('daysLeft').textContent = `${d} dias restantes`;
+        }
+
+        function openApp() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('mainApp').style.display = 'flex';
+            updateExpiryUI(currentKey.expiry);
+            updateClock();
+            setInterval(updateClock, 1000);
+            startSessionWatcher();
+        }
+
+        function logout() {
+            if (sessionCheckInterval) clearInterval(sessionCheckInterval);
+            if (countdownInterval) clearInterval(countdownInterval);
+            localStorage.removeItem(TOKEN_STORAGE);
+            localStorage.removeItem(EXPIRY_STORAGE);
+            currentKey = null;
+            showToast('Sessão encerrada', 'error');
+            setTimeout(() => location.reload(), 1000);
+        }
+
+        function startSessionWatcher() {
+            if (sessionCheckInterval) clearInterval(sessionCheckInterval);
+            sessionCheckInterval = setInterval(async () => {
+                if (!currentKey) return;
+                if (Date.now() >= currentKey.expiry.getTime()) {
+                    localStorage.removeItem(TOKEN_STORAGE);
+                    localStorage.removeItem(EXPIRY_STORAGE);
+                    showToast('Sua key expirou', 'error');
+                    setTimeout(() => location.reload(), 2500);
+                }
+            }, 30000);
+        }
+
+        // ==========================================
+        // UI LOGIC
+        // ==========================================
+        function toggleCard(card) {
+            card.classList.toggle('active');
+            const name = card.querySelector('h4').innerText;
+            const isActive = card.classList.contains('active');
+            showToast(name + (isActive ? ' ativado' : ' desativado'));
+        }
+
+        function switchTab(tabId, el) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById('sec-' + tabId).classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').textContent = 
+                String(now.getHours()).padStart(2,'0') + ':' + 
+                String(now.getMinutes()).padStart(2,'0');
+        }
+
+        // ==========================================
+        // ZIP UPLOAD
+        // ==========================================
+        const zipArea = document.getElementById('zipArea');
+        const zipInput = document.getElementById('zipInput');
+        const zipName = document.getElementById('zipName');
+        const zipBtn = document.getElementById('zipInjectBtn');
+        let selectedFile = null;
+
+        document.getElementById('zipTrigger').addEventListener('click', () => zipInput.click());
+        
+        zipArea.addEventListener('click', (e) => {
+            if (!e.target.closest('#zipTrigger')) zipInput.click();
+        });
+
+        zipArea.addEventListener('dragover', (e) => { e.preventDefault(); zipArea.classList.add('dragover'); });
+        zipArea.addEventListener('dragleave', () => zipArea.classList.remove('dragover'));
+        zipArea.addEventListener('drop', (e) => {
+            e.preventDefault(); zipArea.classList.remove('dragover');
+            if (e.dataTransfer.files.length) processFile(e.dataTransfer.files[0]);
+        });
+
+        zipInput.addEventListener('change', function() {
+            if (this.files.length) processFile(this.files[0]);
+        });
+
+        function processFile(file) {
+            if (!file.name.endsWith('.zip')) return showToast('Apenas .zip', 'error');
+            selectedFile = file;
+            zipName.textContent = file.name;
+            zipBtn.disabled = false;
+            showToast('Arquivo carregado');
+        }
+
+        zipBtn.addEventListener('click', function() {
+            if (!selectedFile) return;
+            this.disabled = true;
+            this.textContent = 'Injetando...';
+            setTimeout(() => {
+                showToast('✓ Arquivo injetado');
+                this.disabled = false;
+                this.textContent = 'Injetar Arquivo';
+            }, 2000);
+        });
+
+        // ==========================================
+        // EXPLOIT
+        // ==========================================
+        let exploitando = false;
+
+        function executeExploit(modo) {
+            if (exploitando) return;
+            exploitando = true;
+
+            const btnN = document.getElementById('exploitNormalBtn');
+            const btnM = document.getElementById('exploitMaxBtn');
+            const loading = document.getElementById('loadingScreen');
+            const text = document.getElementById('loadingText');
+            
+            btnN.disabled = true;
+            btnM.disabled = true;
+
+            const isMax = modo === 'max';
+            text.textContent = isMax ? 'Executando exploit MAX...' : 'Executando exploit Normal...';
+            loading.style.display = 'flex';
+            
+            setTimeout(() => {
+                loading.style.display = 'none';
+                btnN.disabled = false;
+                btnM.disabled = false;
+                exploitando = false;
+                
+                showToast(isMax ? 'Exploit MAX executado' : 'Exploit Normal executado');
+                window.location.href = 'freefire://';
+                
+                setTimeout(() => {
+                    if (!document.hidden) window.location.href = 'https://apps.apple.com/app/free-fire/id1300146617';
+                }, 2000);
+            }, isMax ? 3500 : 2500);
+        }
+
+        // ==========================================
+        // TOAST
+        // ==========================================
+        let toastTimer;
+        function showToast(msg, type = '') {
+            const el = document.getElementById('toast');
+            el.textContent = msg;
+            el.className = 'toast' + (type === 'error' ? ' error' : '');
+            el.classList.add('show');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => el.classList.remove('show'), 2500);
+        }
+
+        // ==========================================
+        // INIT
+        // ==========================================
+        document.getElementById('loginBtn').addEventListener('click', async function() {
+            const key = document.getElementById('keyInput').value.trim();
+            if (!key) return showToast('Digite a key', 'error');
+            this.disabled = true;
+            this.textContent = 'Validando...';
+            const ok = await validateKey(key);
+            this.disabled = false;
+            this.textContent = 'Entrar';
+            if (ok) setTimeout(openApp, 500);
+        });
+
+        document.getElementById('keyInput').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') document.getElementById('loginBtn').click();
+        });
+
+        (async function init() {
+            if (await restoreSession()) setTimeout(openApp, 500);
+        })();
+    </script>
+</body>
+</html>

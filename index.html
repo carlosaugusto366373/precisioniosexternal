@@ -11,7 +11,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         :root {
-            /* Default: Black Theme */
             --bg: #000000;
             --card: #1c1c1e;
             --text: #ffffff;
@@ -20,7 +19,7 @@
             --accent-deep: #248a3d;
             --line: #2c2c2e;
             --input-bg: #1c1c1e;
-            --sidebar-bg: #0a0a0a;
+            --nav-bg: #0a0a0a;
             --btn-text: #000000;
             --badge-bg: #ff453a;
             --icon-bg: rgba(48, 209, 88, 0.15);
@@ -35,7 +34,7 @@
             --accent-deep: #5a189a;
             --line: #33254a;
             --input-bg: #0b0512;
-            --sidebar-bg: #0d0418;
+            --nav-bg: #0d0418;
             --btn-text: #ffffff;
             --badge-bg: #9d4edd;
             --icon-bg: rgba(157, 78, 221, 0.15);
@@ -62,6 +61,7 @@
             background: var(--bg);
             position: relative;
             display: flex;
+            flex-direction: column;
             overflow: hidden;
             box-shadow: 0 0 50px rgba(0,0,0,0.5);
             transition: background 0.3s;
@@ -135,12 +135,12 @@
         .btn-main:hover { filter: brightness(1.1); transform: translateY(-1px); }
         .btn-main:disabled { background: var(--line); color: var(--text-dim); box-shadow: none; cursor: not-allowed; transform: none; }
 
-        /* ============ MAIN LAYOUT ============ */
+        /* ============ MAIN CONTENT ============ */
         .main-content {
             flex: 1;
             display: flex;
             flex-direction: column;
-            padding: 20px 12px 20px 24px;
+            padding: 20px 24px 10px 24px;
             overflow-y: auto;
             position: relative;
             z-index: 10;
@@ -170,7 +170,6 @@
             display: flex; justify-content: center; align-items: center;
         }
         .game-icon img { width: 100%; height: 100%; object-fit: cover; }
-        /* Fallback if image fails */
         .game-icon::after { content: 'FF'; color: #fff; font-weight: 800; font-size: 16px; position: absolute; z-index: -1; }
 
         .top-actions {
@@ -279,13 +278,14 @@
         .file-label span { color: var(--accent); cursor: pointer; font-weight: 700; }
         .file-name { font-size: 12px; color: var(--text-dim); margin-top: 6px; word-break: break-all; }
 
-        /* Big Bottom Buttons */
-        .bottom-actions {
+        /* ============ EXPLOIT BAR (Above Nav) ============ */
+        .exploit-bar {
             display: flex;
             gap: 10px;
-            margin-top: auto;
+            padding: 10px 24px 10px 24px;
+            background: var(--bg); /* Match background to blend */
+            z-index: 20;
             flex-shrink: 0;
-            padding-top: 20px;
         }
         .btn-exploit {
             flex: 1;
@@ -298,8 +298,8 @@
             font-weight: 800;
             cursor: pointer;
             transition: 0.2s;
-            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
             text-align: center;
             letter-spacing: 0.5px;
         }
@@ -308,36 +308,30 @@
             background: var(--accent-deep);
             color: #fff;
         }
-        .btn-exploit:hover { filter: brightness(1.1); transform: translateY(-1px); }
+        .btn-exploit:hover { filter: brightness(1.1); }
         .btn-exploit:active { transform: scale(0.98); }
         .btn-exploit:disabled { background: var(--line); color: var(--text-dim); box-shadow: none; cursor: not-allowed; transform: none; }
 
-        /* ============ SIDEBAR (Right Rail) ============ */
-        .sidebar {
-            width: 76px;
-            background: var(--sidebar-bg);
+        /* ============ BOTTOM NAVIGATION ============ */
+        .bottom-nav {
             display: flex;
-            flex-direction: column;
+            justify-content: space-around;
             align-items: center;
-            justify-content: center; /* Center items vertically */
-            padding: 24px 0;
-            z-index: 10;
-            border-left: 1px solid var(--line);
-            transition: background 0.3s;
-        }
-        .sidebar-nav {
-            display: flex; flex-direction: column; gap: 24px; width: 100%;
+            background: var(--nav-bg);
+            border-top: 1px solid var(--line);
+            padding: 12px 10px 20px 10px; /* Extra bottom padding for iOS home bar */
+            z-index: 30;
+            flex-shrink: 0;
         }
         .nav-item {
             display: flex; flex-direction: column; align-items: center;
-            gap: 6px; color: var(--text-dim); cursor: pointer; transition: 0.2s;
-            padding: 8px 0;
-            width: 100%;
+            gap: 4px; color: var(--text-dim); cursor: pointer; transition: 0.2s;
+            flex: 1;
         }
         .nav-item.active { color: var(--accent); }
         .nav-icon {
-            width: 42px; height: 42px;
-            border-radius: 14px;
+            width: 36px; height: 36px;
+            border-radius: 12px;
             display: flex; justify-content: center; align-items: center;
             transition: 0.2s;
         }
@@ -386,7 +380,6 @@
         <!-- LOGIN -->
         <div id="loginScreen">
             <div class="login-card">
-                <!-- Logo Updated Here -->
                 <img src="IMG-20260806-WA0000 (2).jpg" alt="Logo">
                 <h1>QZZ Panel</h1>
                 <p>iOS Premium Access</p>
@@ -398,23 +391,20 @@
         </div>
 
         <!-- MAIN APP -->
-        <div id="mainApp" style="display: none; width: 100%; height: 100%;">
+        <div id="mainApp" style="display: none; width: 100%; height: 100%; flex-direction: column;">
             <div class="main-content">
                 <!-- Top -->
                 <div class="top-bar">
                     <div class="top-left">
                         <div class="time-badge" id="clock">12:20</div>
                         <div class="game-icon">
-                            <!-- Fallback image for Free Fire -->
                             <img src="https://upload.wikimedia.org/wikipedia/en/9/9c/Garena_Free_Fire_logo.png" alt="Free Fire" onerror="this.style.display='none'">
                         </div>
                     </div>
                     <div class="top-actions">
-                        <!-- THEME TOGGLE -->
                         <div class="action-icon" id="themeToggle" onclick="toggleTheme()">
                             <svg class="icon-sm" viewBox="0 0 24 24" id="themeIcon"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
                         </div>
-                        <!-- SETTINGS -->
                         <div class="action-icon">
                             <svg class="icon-sm" viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                         </div>
@@ -529,45 +519,43 @@
                         <button class="btn-main" onclick="logout()" style="background:transparent; color:#ff453a; border:1px solid #ff453a; box-shadow:none; margin-top:20px;">Sair da Conta</button>
                     </div>
                 </div>
-
-                <!-- Bottom Buttons -->
-                <div class="bottom-actions">
-                    <button class="btn-exploit" id="exploitNormalBtn" onclick="executeExploit('normal')">
-                        EXPLOIT <span>NORMAL</span>
-                    </button>
-                    <button class="btn-exploit max" id="exploitMaxBtn" onclick="executeExploit('max')">
-                        EXPLOIT <span>MAX</span>
-                    </button>
-                </div>
             </div>
 
-            <!-- RIGHT SIDEBAR -->
-            <div class="sidebar">
-                <div class="sidebar-nav">
-                    <div class="nav-item active" onclick="switchTab('funcoes', this)">
-                        <div class="nav-icon">
-                            <svg class="icon-md" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4"></circle><line x1="12" y1="2" x2="12" y2="4"></line><line x1="12" y1="20" x2="12" y2="22"></line><line x1="2" y1="12" x2="4" y2="12"></line><line x1="20" y1="12" x2="22" y2="12"></line></svg>
-                        </div>
-                        <span class="nav-label">Funções</span>
+            <!-- FIXED BOTTOM ACTIONS -->
+            <div class="exploit-bar">
+                <button class="btn-exploit" id="exploitNormalBtn" onclick="executeExploit('normal')">
+                    EXPLOIT <span>NORMAL</span>
+                </button>
+                <button class="btn-exploit max" id="exploitMaxBtn" onclick="executeExploit('max')">
+                    EXPLOIT <span>MAX</span>
+                </button>
+            </div>
+
+            <!-- BOTTOM NAVIGATION -->
+            <div class="bottom-nav">
+                <div class="nav-item active" onclick="switchTab('funcoes', this)">
+                    <div class="nav-icon">
+                        <svg class="icon-md" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4"></circle><line x1="12" y1="2" x2="12" y2="4"></line><line x1="12" y1="20" x2="12" y2="22"></line><line x1="2" y1="12" x2="4" y2="12"></line><line x1="20" y1="12" x2="22" y2="12"></line></svg>
                     </div>
-                    <div class="nav-item" onclick="switchTab('lag', this)">
-                        <div class="nav-icon">
-                            <svg class="icon-md" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-                        </div>
-                        <span class="nav-label">Lag</span>
+                    <span class="nav-label">Funções</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('lag', this)">
+                    <div class="nav-icon">
+                        <svg class="icon-md" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
                     </div>
-                    <div class="nav-item" onclick="switchTab('arquivos', this)">
-                        <div class="nav-icon">
-                            <svg class="icon-md" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
-                        </div>
-                        <span class="nav-label">Arquivos</span>
+                    <span class="nav-label">Lag</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('arquivos', this)">
+                    <div class="nav-icon">
+                        <svg class="icon-md" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
                     </div>
-                    <div class="nav-item" onclick="switchTab('conta', this)">
-                        <div class="nav-icon">
-                            <svg class="icon-md" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                        </div>
-                        <span class="nav-label">Conta</span>
+                    <span class="nav-label">Arquivos</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('conta', this)">
+                    <div class="nav-icon">
+                        <svg class="icon-md" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                     </div>
+                    <span class="nav-label">Conta</span>
                 </div>
             </div>
         </div>
@@ -590,7 +578,6 @@
             body.setAttribute('data-theme', next);
             localStorage.setItem('qzz_theme', next);
             
-            // Swap icon to sun if purple, moon if black
             const icon = document.getElementById('themeIcon');
             if (next === 'purple') {
                 icon.innerHTML = '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>';
@@ -599,11 +586,10 @@
             }
         }
 
-        // Load saved theme
         const savedTheme = localStorage.getItem('qzz_theme') || 'black';
         document.body.setAttribute('data-theme', savedTheme);
         if (savedTheme === 'purple') {
-            setTimeout(() => toggleTheme(), 100); // flip icon
+            setTimeout(() => toggleTheme(), 100);
         }
 
         // ==========================================

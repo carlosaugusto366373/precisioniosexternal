@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#000000">
-    <title>PayPal - iOS</title>
+    <title>PayPal</title>
     <!-- Logo do PayPal no Favicon -->
     <link rel="icon" type="image/jpeg" href="https://i.imgur.com/odQWqVN.jpeg">
     <link rel="apple-touch-icon" href="https://i.imgur.com/odQWqVN.jpeg">
@@ -325,7 +325,7 @@
                 <!-- LOGO DO PAYPAL AQUI -->
                 <img src="https://i.imgur.com/odQWqVN.jpeg" alt="PayPal Logo">
                 <h1>PayPal</h1>
-                <p>iOS Premium Access</p>
+                <p>Acesso Premium</p>
                 <div class="input-wrap">
                     <input type="text" id="keyInput" placeholder="Digite sua key" autocomplete="off">
                 </div>
@@ -574,7 +574,7 @@
                 }
                 localStorage.setItem(TOKEN_STORAGE, data.token);
                 localStorage.setItem(EXPIRY_STORAGE, String(data.expiresAt));
-                localStorage.setItem(KEY_STORAGE, code.trim()); // Salva a key para checagem
+                localStorage.setItem(KEY_STORAGE, code.trim());
                 currentKey = { key: code, expiry: new Date(data.expiresAt) };
                 showToast('Acesso liberado', '');
                 return true;

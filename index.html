@@ -2,840 +2,1035 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#000000">
-    <title>PayPal</title>
-    <!-- Logo do PayPal no Favicon -->
-    <link rel="icon" type="image/jpeg" href="https://i.imgur.com/odQWqVN.jpeg">
-    <link rel="apple-touch-icon" href="https://i.imgur.com/odQWqVN.jpeg">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800;900&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>QZZ GEN – Gerador de Sensi</title>
 
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        
-        :root {
-            --bg: #000000;
-            --card: #1c1c1e;
-            --text: #ffffff;
-            --text-dim: #8e8e93;
-            --accent: #30d158; 
-            --accent-deep: #248a3d;
-            --line: #2c2c2e;
-            --input-bg: #1c1c1e;
-            --nav-bg: #0a0a0a;
-            --btn-text: #000000;
-            --badge-bg: #ff453a;
-            --icon-bg: rgba(48, 209, 88, 0.15);
-        }
+    <link rel="manifest" id="manifestLink">
+    <meta name="theme-color" content="#0a0505">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="QZZ GEN">
 
-        [data-theme="purple"] {
-            --bg: #07000f;
-            --card: #170828;
-            --text: #ffffff;
-            --text-dim: #a58bb0;
-            --accent: #9d4edd;
-            --accent-deep: #5a189a;
-            --line: #33254a;
-            --input-bg: #0b0512;
-            --nav-bg: #0d0418;
-            --btn-text: #ffffff;
-            --badge-bg: #9d4edd;
-            --icon-bg: rgba(157, 78, 221, 0.15);
-        }
-
-        html, body {
-            width: 100%; height: 100%; overflow: hidden;
-            background: #111;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            transition: background 0.3s;
-        }
-
-        h1, h2, h3, h4, .btn, .nav-label {
-            font-family: 'Outfit', sans-serif;
-        }
-
-        .app-container {
-            width: 100%; height: 100%;
-            max-width: 900px;
-            max-height: 100vh;
-            background: var(--bg);
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            box-shadow: 0 0 50px rgba(0,0,0,0.5);
-            transition: background 0.3s;
-        }
-
-        @media (min-aspect-ratio: 1/1) {
-            .app-container {
-                border-radius: 24px;
-                height: 95vh;
-                max-height: 700px;
-                border: 1px solid var(--line);
-            }
-        }
-
-        svg { stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-        .icon-sm { width: 18px; height: 18px; }
-        .icon-md { width: 24px; height: 24px; }
-
-        #loginScreen {
-            position: absolute; inset: 0; z-index: 100;
-            background: var(--bg);
-            display: flex; justify-content: center; align-items: center;
-            padding: 20px;
-            transition: opacity 0.4s ease, background 0.3s;
-        }
-        .login-card {
-            background: var(--card);
-            border-radius: 24px;
-            padding: 32px 24px;
-            width: 100%; max-width: 340px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            text-align: center;
-            border: 1px solid var(--line);
-        }
-        .login-card img {
-            width: 72px; height: 72px; border-radius: 18px;
-            object-fit: cover; margin-bottom: 20px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-            background: var(--line);
-        }
-        .login-card h1 { font-size: 24px; font-weight: 800; color: var(--text); margin-bottom: 6px; letter-spacing: -0.5px; }
-        .login-card p { font-size: 13px; color: var(--text-dim); margin-bottom: 28px; font-weight: 500; }
-        
-        .input-wrap {
-            background: var(--input-bg);
-            border-radius: 14px;
-            padding: 14px;
-            margin-bottom: 14px;
-            display: flex;
-            align-items: center;
-            border: 1px solid var(--line);
-        }
-        .input-wrap input {
-            border: none; background: transparent;
-            width: 100%; text-align: center;
-            font-size: 15px; font-weight: 600; color: var(--text);
-            outline: none; letter-spacing: 1px;
-        }
-        .input-wrap input::placeholder { color: var(--text-dim); font-weight: 500; letter-spacing: 0; }
-        
-        .btn-main {
-            width: 100%; border: none;
-            background: var(--accent); color: var(--btn-text);
-            padding: 16px; border-radius: 14px;
-            font-size: 15px; font-weight: 700;
-            cursor: pointer; transition: 0.2s;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-        .btn-main:hover { filter: brightness(1.1); transform: translateY(-1px); }
-        .btn-main:disabled { background: var(--line); color: var(--text-dim); box-shadow: none; cursor: not-allowed; transform: none; }
-
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            padding: 20px 24px 10px 24px;
-            overflow-y: auto;
-            position: relative;
-            z-index: 10;
-        }
-        .main-content::-webkit-scrollbar { width: 0; }
-
-        .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 24px;
-        }
-        .top-left { display: flex; flex-direction: column; gap: 12px; }
-        .time-badge {
-            background: var(--badge-bg); color: #fff;
-            padding: 5px 12px; border-radius: 8px;
-            font-size: 12px; font-weight: 700; letter-spacing: 0.5px;
-            align-self: flex-start;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-            font-family: 'Inter', sans-serif;
-        }
-        .game-icon {
-            width: 44px; height: 44px; border-radius: 12px;
-            background: #333; overflow: hidden;
-            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
-            display: flex; justify-content: center; align-items: center;
-        }
-        .game-icon img { width: 100%; height: 100%; object-fit: cover; }
-        .game-icon::after { content: 'FF'; color: #fff; font-weight: 800; font-size: 16px; position: absolute; z-index: -1; }
-
-        .top-actions { display: flex; gap: 12px; align-items: center; }
-        .action-icon {
-            width: 40px; height: 40px;
-            background: var(--card); border-radius: 50%;
-            display: flex; justify-content: center; align-items: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            color: var(--text); cursor: pointer;
-            border: 1px solid var(--line);
-            transition: 0.2s;
-        }
-        .action-icon:hover { background: var(--line); }
-        .action-icon:active { transform: scale(0.95); }
-
-        .hero-title { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
-        .hero-title h2 { font-size: 34px; font-weight: 900; color: var(--text); letter-spacing: -1px; }
-        .status-pill {
-            background: var(--icon-bg); color: var(--accent);
-            padding: 5px 10px; border-radius: 8px;
-            font-size: 10px; font-weight: 800;
-            display: flex; align-items: center; gap: 6px;
-            text-transform: uppercase; letter-spacing: 0.5px;
-            font-family: 'Outfit', sans-serif;
-        }
-        .status-pill::before { content: ''; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; }
-        .subtitle { font-size: 13px; color: var(--text-dim); font-weight: 500; margin-bottom: 28px; }
-
-        .section-title {
-            font-size: 11px; font-weight: 700; color: var(--text-dim);
-            text-transform: uppercase; letter-spacing: 1px;
-            margin-bottom: 14px; font-family: 'Outfit', sans-serif;
-        }
-
-        .feature-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
-        .feature-card {
-            background: var(--card); border-radius: 18px; padding: 16px 18px;
-            display: flex; justify-content: space-between; align-items: center;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.05);
-            cursor: pointer; transition: transform 0.1s, border-color 0.2s;
-            border: 1px solid transparent;
-        }
-        .feature-card:active { transform: scale(0.98); }
-        .feature-card.active { border-color: var(--line); }
-        
-        .fc-info h4 { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
-        .fc-info p { font-size: 12px; color: var(--text-dim); font-weight: 400; line-height: 1.4; }
-
-        .toggle {
-            width: 48px; height: 28px; background: var(--line);
-            border-radius: 20px; position: relative; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            flex-shrink: 0; margin-left: 12px;
-        }
-        .toggle::after {
-            content: ''; position: absolute; width: 24px; height: 24px;
-            background: #fff; border-radius: 50%; top: 2px; left: 2px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2); transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-        }
-        .feature-card.active .toggle { background: var(--accent); }
-        .feature-card.active .toggle::after { transform: translateX(20px); }
-
-        .file-card {
-            background: var(--card); border-radius: 18px; padding: 20px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.05); margin-bottom: 20px;
-            border: 2px dashed var(--line); text-align: center; transition: 0.2s;
-        }
-        .file-card.dragover { border-color: var(--accent); background: var(--icon-bg); }
-        .file-icon { color: var(--accent); margin-bottom: 12px; display: flex; justify-content: center; }
-        .file-label { font-size: 14px; font-weight: 600; color: var(--text); }
-        .file-label span { color: var(--accent); cursor: pointer; font-weight: 700; }
-        .file-name { font-size: 12px; color: var(--text-dim); margin-top: 6px; word-break: break-all; }
-
-        .exploit-bar {
-            display: flex; gap: 10px; padding: 10px 24px;
-            background: var(--bg); z-index: 20; flex-shrink: 0;
-        }
-        .btn-exploit {
-            flex: 1; border: none; background: var(--accent); color: var(--btn-text);
-            padding: 16px 8px; border-radius: 18px; font-size: 14px; font-weight: 800;
-            cursor: pointer; transition: 0.2s;
-            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2); text-align: center; letter-spacing: 0.5px;
-            position: relative; overflow: hidden;
-        }
-        .btn-exploit span { font-size: 11px; font-weight: 600; opacity: 0.8; }
-        .btn-exploit.max { background: var(--accent-deep); color: #fff; }
-        .btn-exploit:hover { filter: brightness(1.1); }
-        .btn-exploit:active { transform: scale(0.98); }
-        .btn-exploit:disabled { background: var(--line); color: var(--text-dim); box-shadow: none; cursor: not-allowed; transform: none; }
-
-        /* Efeito de Bolha ao clicar no Exploit */
-        .bubble-effect {
-            position: absolute; border-radius: 50%;
-            background: rgba(255,255,255,0.4);
-            transform: scale(0); animation: bubblePop 0.6s ease-out;
-            pointer-events: none;
-        }
-        @keyframes bubblePop {
-            to { transform: scale(4); opacity: 0; }
-        }
-
-        .bottom-nav {
-            display: flex; justify-content: space-around; align-items: center;
-            background: var(--nav-bg); border-top: 1px solid var(--line);
-            padding: 12px 10px 20px 10px; z-index: 30; flex-shrink: 0;
-        }
-        .nav-item {
-            display: flex; flex-direction: column; align-items: center;
-            gap: 4px; color: var(--text-dim); cursor: pointer; transition: 0.2s; flex: 1;
-        }
-        .nav-item.active { color: var(--accent); }
-        .nav-icon {
-            width: 36px; height: 36px; border-radius: 12px;
-            display: flex; justify-content: center; align-items: center; transition: 0.2s;
-        }
-        .nav-item.active .nav-icon { background: var(--icon-bg); }
-        .nav-label { font-size: 10px; font-weight: 700; }
-
-        #loadingScreen {
-            position: absolute; inset: 0; background: rgba(0,0,0,0.85);
-            display: none; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 999; backdrop-filter: blur(8px);
-        }
-        .spinner {
-            width: 44px; height: 44px; border: 4px solid var(--line); border-top: 4px solid var(--accent);
-            border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .loading-text { font-size: 15px; font-weight: 700; color: var(--text); font-family: 'Outfit', sans-serif; letter-spacing: 0.5px; }
-
-        .toast {
-            position: absolute; top: 24px; left: 50%;
-            transform: translateX(-50%) translateY(-20px);
-            background: var(--text); color: var(--bg);
-            padding: 12px 24px; border-radius: 24px; font-size: 13px; font-weight: 700;
-            opacity: 0; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); z-index: 1000; pointer-events: none;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4); font-family: 'Inter', sans-serif;
-        }
-        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-        .toast.error { background: #ff453a; color: #fff; }
-
-        .section { display: none; animation: fadeIn 0.3s ease; }
-        .section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-
-    </style>
-</head>
-<body data-theme="black">
-
-    <div class="app-container">
-        <!-- LOGIN -->
-        <div id="loginScreen">
-            <div class="login-card">
-                <!-- LOGO DO PAYPAL AQUI -->
-                <img src="https://i.imgur.com/odQWqVN.jpeg" alt="PayPal Logo">
-                <h1>PayPal</h1>
-                <p>Acesso Premium</p>
-                <div class="input-wrap">
-                    <input type="text" id="keyInput" placeholder="Digite sua key" autocomplete="off">
-                </div>
-                <button class="btn-main" id="loginBtn">Entrar</button>
-            </div>
-        </div>
-
-        <!-- MAIN APP -->
-        <div id="mainApp" style="display: none; width: 100%; height: 100%; flex-direction: column;">
-            <div class="main-content">
-                <div class="top-bar">
-                    <div class="top-left">
-                        <div class="time-badge" id="clock">12:20</div>
-                        <div class="game-icon">
-                            <img src="https://upload.wikimedia.org/wikipedia/en/9/9c/Garena_Free_Fire_logo.png" alt="Free Fire" onerror="this.style.display='none'">
-                        </div>
-                    </div>
-                    <div class="top-actions">
-                        <div class="action-icon" id="themeToggle" onclick="toggleTheme()">
-                            <svg class="icon-sm" viewBox="0 0 24 24" id="themeIcon"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
-                        </div>
-                        <div class="action-icon">
-                            <svg class="icon-sm" viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="contentArea">
-                    <!-- FUNCTIONS SECTION -->
-                    <div class="section active" id="sec-funcoes">
-                        <div class="hero-title">
-                            <h2>Funções</h2>
-                            <div class="status-pill">Ativo</div>
-                        </div>
-                        <div class="subtitle">Free Fire Normal • com.dts.freefireth</div>
-
-                        <div class="section-title">FUNÇÕES CACHE</div>
-                        <div class="feature-list">
-                            <div class="feature-card active" onclick="toggleCard(this)">
-                                <div class="fc-info">
-                                    <h4>Remover tremedeira</h4>
-                                    <p>Estabilização de mira</p>
-                                </div>
-                                <div class="toggle"></div>
-                            </div>
-                            <div class="feature-card" onclick="toggleCard(this)">
-                                <div class="fc-info">
-                                    <h4>Reduzir recoil</h4>
-                                    <p>Controle de recuo</p>
-                                </div>
-                                <div class="toggle"></div>
-                            </div>
-                            <div class="feature-card active" onclick="toggleCard(this)">
-                                <div class="fc-info">
-                                    <h4>Modo desempenho</h4>
-                                    <p>Otimização de performance</p>
-                                </div>
-                                <div class="toggle"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- LAG SECTION -->
-                    <div class="section" id="sec-lag">
-                        <div class="hero-title">
-                            <h2>Lag</h2>
-                            <div class="status-pill">Otimizar</div>
-                        </div>
-                        <div class="subtitle">Redução de ping e estabilidade</div>
-
-                        <div class="section-title">OTIMIZAÇÃO</div>
-                        <div class="feature-list">
-                            <div class="feature-card active" onclick="toggleCard(this)">
-                                <div class="fc-info">
-                                    <h4>Reduzir lag</h4>
-                                    <p>Otimização de rede</p>
-                                </div>
-                                <div class="toggle"></div>
-                            </div>
-                            <div class="feature-card" onclick="toggleCard(this)">
-                                <div class="fc-info">
-                                    <h4>Travar em 60 FPS</h4>
-                                    <p>Estabilidade de quadros</p>
-                                </div>
-                                <div class="toggle"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- FILES SECTION -->
-                    <div class="section" id="sec-arquivos">
-                        <div class="hero-title">
-                            <h2>Arquivos</h2>
-                            <div class="status-pill" style="background:rgba(255,159,10,0.15);color:#ff9f0a;">Upload</div>
-                        </div>
-                        <div class="subtitle">Injete arquivos ZIP customizados</div>
-
-                        <div class="section-title">SELECIONE O ARQUIVO</div>
-                        <div class="file-card" id="zipArea">
-                            <div class="file-icon">
-                                <svg class="icon-md" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-                            </div>
-                            <div class="file-label">Arraste ou <span id="zipTrigger">selecione</span> um .zip</div>
-                            <div class="file-name" id="zipName"></div>
-                            <input type="file" id="zipInput" accept=".zip" style="display:none">
-                        </div>
-                        <button class="btn-main" id="zipInjectBtn" disabled style="margin-top:10px;">Injetar Arquivo</button>
-                    </div>
-
-                    <!-- SETTINGS SECTION -->
-                    <div class="section" id="sec-conta">
-                        <div class="hero-title">
-                            <h2>Conta</h2>
-                        </div>
-                        <div class="subtitle">Informações da licença</div>
-                        
-                        <div class="section-title">STATUS</div>
-                        <div class="feature-list">
-                            <div class="feature-card" style="cursor:default;">
-                                <div class="fc-info">
-                                    <h4>Expira em</h4>
-                                    <p id="expirationDate">Carregando...</p>
-                                </div>
-                            </div>
-                            <div class="feature-card" style="cursor:default;">
-                                <div class="fc-info">
-                                    <h4>Tempo Restante</h4>
-                                    <p id="daysLeft">--</p>
-                                </div>
-                            </div>
-                        </div>
-                        <button class="btn-main" onclick="logout()" style="background:transparent; color:#ff453a; border:1px solid #ff453a; box-shadow:none; margin-top:20px;">Sair da Conta</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- FIXED BOTTOM ACTIONS -->
-            <div class="exploit-bar">
-                <button class="btn-exploit" id="exploitNormalBtn" onclick="executeExploit('normal', event)">
-                    EXPLOIT <span>NORMAL</span>
-                </button>
-                <button class="btn-exploit max" id="exploitMaxBtn" onclick="executeExploit('max', event)">
-                    EXPLOIT <span>MAX</span>
-                </button>
-            </div>
-
-            <!-- BOTTOM NAVIGATION -->
-            <div class="bottom-nav">
-                <div class="nav-item active" onclick="switchTab('funcoes', this)">
-                    <div class="nav-icon">
-                        <svg class="icon-md" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4"></circle><line x1="12" y1="2" x2="12" y2="4"></line><line x1="12" y1="20" x2="12" y2="22"></line><line x1="2" y1="12" x2="4" y2="12"></line><line x1="20" y1="12" x2="22" y2="12"></line></svg>
-                    </div>
-                    <span class="nav-label">Funções</span>
-                </div>
-                <div class="nav-item" onclick="switchTab('lag', this)">
-                    <div class="nav-icon">
-                        <svg class="icon-md" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-                    </div>
-                    <span class="nav-label">Lag</span>
-                </div>
-                <div class="nav-item" onclick="switchTab('arquivos', this)">
-                    <div class="nav-icon">
-                        <svg class="icon-md" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
-                    </div>
-                    <span class="nav-label">Arquivos</span>
-                </div>
-                <div class="nav-item" onclick="switchTab('conta', this)">
-                    <div class="nav-icon">
-                        <svg class="icon-md" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                    </div>
-                    <span class="nav-label">Conta</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="toast" id="toast">Mensagem</div>
-    <div id="loadingScreen">
-        <div class="spinner"></div>
-        <div class="loading-text" id="loadingText">Executando exploit...</div>
-    </div>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <script>
-        // ==========================================
-        // THEME SWITCHER
-        // ==========================================
-        function toggleTheme() {
-            const body = document.body;
-            const current = body.getAttribute('data-theme');
-            const next = current === 'black' ? 'purple' : 'black';
-            body.setAttribute('data-theme', next);
-            localStorage.setItem('qzz_theme', next);
-            
-            const icon = document.getElementById('themeIcon');
-            if (next === 'purple') {
-                icon.innerHTML = '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>';
-            } else {
-                icon.innerHTML = '<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>';
-            }
-        }
-
-        const savedTheme = localStorage.getItem('qzz_theme') || 'black';
-        document.body.setAttribute('data-theme', savedTheme);
-        if (savedTheme === 'purple') {
-            setTimeout(() => toggleTheme(), 100);
-        }
-
-        // ==========================================
-        // CONFIG & AUTH
-        // ==========================================
-       const API_BASE = 'https://qzzbackend.squareweb.app';
-        const BLOCKED_KEYS = ['QZZ-H7N4K2-P9RX','QZZ-B3V8M6-T5QW','QZZ-X2D9L7-C4KP','QZZ-R6T3F8-N2VM','QZZ-M5K9P4-W7XD'].map(k => k.toLowerCase());
-        
-        let currentKey = null;
-        let countdownInterval = null;
+        // ================================================================
+        // 0. BACKEND DE VALIDAÇÃO (DIRETO, IGUAL AO PAINEL)
+        // ================================================================
+        const API_BASE = 'https://qzzbackend.squareweb.app';
         let sessionCheckInterval = null;
-        const TOKEN_STORAGE = 'qzz_token';
-        const EXPIRY_STORAGE = 'qzz_expiry';
-        const KEY_STORAGE = 'qzz_key_salva';
 
-        function getBrowserHwid() {
-            let hwid = localStorage.getItem('qzz_hwid');
+        async function validarChaveRemota(chave) {
+            const chaveLimpa = (chave || '').trim();
+            if (!chaveLimpa) return { ok: false, motivo: 'vazia' };
+
+            let hwid = localStorage.getItem('qzz_web_hwid');
             if (!hwid) {
-                hwid = crypto.randomUUID ? crypto.randomUUID() : 'web-' + Date.now();
-                localStorage.setItem('qzz_hwid', hwid);
+                hwid = crypto.randomUUID ? crypto.randomUUID() : 'web-' + Date.now() + '-' + Math.random().toString(36).substring(2);
+                localStorage.setItem('qzz_web_hwid', hwid);
             }
-            return hwid;
-        }
 
-        async function validateKey(code) {
-            const norm = code.trim().toLowerCase();
-            if (BLOCKED_KEYS.includes(norm)) {
-                showToast('Key bloqueada', 'error');
-                return false;
-            }
             try {
                 const resp = await fetch(API_BASE + '/api/auth/login', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ key: code, hwid: getBrowserHwid() })
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ key: chaveLimpa, hwid: hwid })
                 });
+
                 const data = await resp.json();
-                if (!data.success) {
-                    showToast(data.message || 'Key inválida', 'error');
-                    return false;
+
+                if (data.success === true) {
+                    return { ok: true, expira: data.expiresAt || data.expira || null, hwid: hwid };
                 }
-                localStorage.setItem(TOKEN_STORAGE, data.token);
-                localStorage.setItem(EXPIRY_STORAGE, String(data.expiresAt));
-                localStorage.setItem(KEY_STORAGE, code.trim());
-                currentKey = { key: code, expiry: new Date(data.expiresAt) };
-                showToast('Acesso liberado', '');
-                return true;
-            } catch (e) {
-                showToast('Erro de conexão', 'error');
-                return false;
+
+                let motivo = 'invalida';
+                const msg = (data.message || data.error || '').toLowerCase();
+                
+                if (msg.includes('expir') || msg.includes('vencid')) motivo = 'expirada';
+                else if (msg.includes('ban') || msg.includes('revogad')) motivo = 'banida';
+                else if (msg.includes('pausad') || msg.includes('desativ')) motivo = 'pausada';
+                else if (msg.includes('hwid') || msg.includes('dispositivo')) motivo = 'hwid';
+
+                return { ok: false, motivo };
+
+            } catch (err) {
+                console.warn(`[QZZ] Erro na validação:`, err.message);
+                return { ok: false, motivo: 'offline' };
             }
         }
 
-        async function restoreSession() {
-            const token = localStorage.getItem(TOKEN_STORAGE);
-            const expiry = localStorage.getItem(EXPIRY_STORAGE);
-            if (!token || !expiry) return false;
-            const expDate = new Date(Number(expiry));
-            if (isNaN(expDate.getTime()) || expDate <= new Date()) {
-                localStorage.removeItem(TOKEN_STORAGE);
-                localStorage.removeItem(EXPIRY_STORAGE);
-                return false;
-            }
-            try {
-                const resp = await fetch(API_BASE + '/api/auth/session', {
-                    headers: { 'Authorization': 'Bearer ' + token }
-                });
-                const data = await resp.json();
-                if (!data.success) {
-                    localStorage.removeItem(TOKEN_STORAGE);
-                    localStorage.removeItem(EXPIRY_STORAGE);
-                    return false;
-                }
-                currentKey = { key: 'sessao', expiry: data.expiresAt ? new Date(data.expiresAt) : expDate };
-                return true;
-            } catch (e) {
-                currentKey = { key: 'sessao', expiry: expDate };
-                return true;
-            }
-        }
-
-        function updateExpiryUI(expiry) {
-            if (!expiry) return;
-            document.getElementById('expirationDate').textContent = expiry.toLocaleDateString('pt-BR');
-            const diff = expiry - Date.now();
-            const d = Math.floor(diff / 86400000);
-            document.getElementById('daysLeft').textContent = `${d} dias restantes`;
-        }
-
-        function openApp() {
-            document.getElementById('loginScreen').style.display = 'none';
-            document.getElementById('mainApp').style.display = 'flex';
-            updateExpiryUI(currentKey.expiry);
-            updateClock();
-            setInterval(updateClock, 1000);
-            startSessionWatcher();
-        }
-
-        function logout() {
+        function iniciarWatcherDeSessao() {
             if (sessionCheckInterval) clearInterval(sessionCheckInterval);
-            if (countdownInterval) clearInterval(countdownInterval);
-            localStorage.removeItem(TOKEN_STORAGE);
-            localStorage.removeItem(EXPIRY_STORAGE);
-            localStorage.removeItem(KEY_STORAGE);
-            currentKey = null;
-            showToast('Sessão encerrada', 'error');
-            setTimeout(() => location.reload(), 1000);
-        }
-
-        // --- CHECAGEM EM TEMPO REAL DE BAN/EXPIRAÇÃO ---
-        function startSessionWatcher() {
-            if (sessionCheckInterval) clearInterval(sessionCheckInterval);
+            
             sessionCheckInterval = setInterval(async () => {
-                if (!currentKey) return;
+                const saved = JSON.parse(localStorage.getItem('qzz_key_data') || 'null');
+                if (!saved || !saved.key) return;
+
+                const resultado = await validarChaveRemota(saved.key);
                 
-                // 1. Checa se expirou localmente
-                if (Date.now() >= currentKey.expiry.getTime()) {
-                    forceLogout('Sua key expirou');
-                    return;
+                if (!resultado.ok && (resultado.motivo === 'banida' || resultado.motivo === 'expirada' || resultado.motivo === 'pausada')) {
+                    clearInterval(sessionCheckInterval);
+                    try { localStorage.removeItem('qzz_key_data'); } catch(e){}
+                    
+                    let msgErro = 'sua chave expirou ou foi invalidada.';
+                    if (resultado.motivo === 'banida') msgErro = 'sua chave foi banida.';
+                    if (resultado.motivo === 'pausada') msgErro = 'sua chave foi pausada pelo admin.';
+                    
+                    document.getElementById('telaPrincipal').classList.add('hidden');
+                    document.getElementById('telaChave').classList.remove('hidden');
+                    document.getElementById('keyStatus').textContent = '⚠ ' + msgErro;
+                    document.getElementById('keyStatus').className = 'key-status erro';
+                    document.getElementById('inputChave').value = '';
                 }
-
-                // 2. Checa no servidor se a key foi banida (a cada 15 segundos)
-                const keySalva = localStorage.getItem(KEY_STORAGE);
-                if (keySalva) {
-                    try {
-                        const resp = await fetch(API_BASE + '/api/auth/login', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ key: keySalva, hwid: getBrowserHwid() })
-                        });
-                        const data = await resp.json();
-                        if (!data.success) {
-                            forceLogout('Sua key foi revogada ou banida!');
-                        }
-                    } catch (e) {
-                        console.warn('Falha ao checar sessão:', e);
-                    }
-                }
-            }, 15000); // Checa a cada 15s
+            }, 15000);
         }
 
-        function forceLogout(mensagem) {
-            localStorage.removeItem(TOKEN_STORAGE);
-            localStorage.removeItem(EXPIRY_STORAGE);
-            localStorage.removeItem(KEY_STORAGE);
-            showToast('⚠ ' + mensagem, 'error');
-            setTimeout(() => location.reload(), 2500);
+        // ================================================================
+        // BASE DE DISPOSITIVOS
+        // ================================================================
+        const baseDispositivos = {
+            'samsung_s24': { dpi: 600 }, 'samsung_s24plus': { dpi: 590 }, 'samsung_s24ultra': { dpi: 600 },
+            'samsung_s23': { dpi: 580 }, 'samsung_s23plus': { dpi: 585 }, 'samsung_s23ultra': { dpi: 590 },
+            'samsung_s22': { dpi: 570 }, 'samsung_s22plus': { dpi: 575 }, 'samsung_s22ultra': { dpi: 580 },
+            'samsung_s21': { dpi: 560 }, 'samsung_s21plus': { dpi: 565 }, 'samsung_s21ultra': { dpi: 570 },
+            'samsung_a55': { dpi: 450 }, 'samsung_a54': { dpi: 445 }, 'samsung_a35': { dpi: 430 },
+            'samsung_a34': { dpi: 425 }, 'samsung_a25': { dpi: 415 }, 'samsung_a15': { dpi: 400 },
+            'samsung_a14': { dpi: 395 }, 'samsung_a05': { dpi: 380 }, 'samsung_zfold5': { dpi: 500 },
+            'samsung_zfold4': { dpi: 490 }, 'samsung_zflip5': { dpi: 480 }, 'samsung_zflip4': { dpi: 475 },
+            'samsung_m54': { dpi: 440 }, 'samsung_m34': { dpi: 420 }, 'samsung_f54': { dpi: 430 },
+            'xiaomi_redmi13': { dpi: 400 }, 'xiaomi_redmi13c': { dpi: 395 }, 'xiaomi_redmi12': { dpi: 395 },
+            'xiaomi_redmi12c': { dpi: 390 }, 'xiaomi_poco': { dpi: 460 }, 'xiaomi_pocox6': { dpi: 470 },
+            'xiaomi_pocox5': { dpi: 460 }, 'xiaomi_pocof5': { dpi: 465 }, 'xiaomi_mi14': { dpi: 500 },
+            'xiaomi_mi13': { dpi: 490 }, 'xiaomi_mi12': { dpi: 480 }, 'xiaomi_redminote12': { dpi: 410 },
+            'xiaomi_redminote11': { dpi: 405 }, 'xiaomi_redminote10': { dpi: 400 }, 'xiaomi_12t': { dpi: 485 },
+            'xiaomi_11t': { dpi: 475 }, 'motorola_g54': { dpi: 394 }, 'motorola_g53': { dpi: 390 },
+            'motorola_g84': { dpi: 420 }, 'motorola_g73': { dpi: 400 }, 'motorola_g72': { dpi: 395 },
+            'motorola_edge40': { dpi: 480 }, 'motorola_edge50': { dpi: 490 }, 'motorola_edge30': { dpi: 470 },
+            'motorola_razr40': { dpi: 460 }, 'motorola_g100': { dpi: 450 }, 'apple_iphone16pm': { dpi: 470 },
+            'apple_iphone16p': { dpi: 468 }, 'apple_iphone16': { dpi: 465 }, 'apple_iphone16plus': { dpi: 466 },
+            'apple_iphone15pm': { dpi: 460 }, 'apple_iphone15p': { dpi: 458 }, 'apple_iphone15': { dpi: 460 },
+            'apple_iphone15plus': { dpi: 461 }, 'apple_iphone14pm': { dpi: 460 }, 'apple_iphone14p': { dpi: 458 },
+            'apple_iphone14': { dpi: 460 }, 'apple_iphone14plus': { dpi: 461 }, 'apple_iphone13pm': { dpi: 455 },
+            'apple_iphone13': { dpi: 455 }, 'apple_iphone13mini': { dpi: 455 }, 'apple_iphone12pm': { dpi: 450 },
+            'apple_iphone12': { dpi: 450 }, 'apple_iphone12mini': { dpi: 450 }, 'apple_iphone11pm': { dpi: 440 },
+            'apple_iphone11': { dpi: 440 }, 'apple_iphonese3': { dpi: 430 }, 'apple_iphonese2': { dpi: 425 },
+            'asus_rog8': { dpi: 620 }, 'asus_rog8pro': { dpi: 625 }, 'asus_rog7': { dpi: 600 },
+            'asus_rog7ultimate': { dpi: 610 }, 'asus_rog6': { dpi: 590 }, 'asus_zenfone10': { dpi: 520 },
+            'asus_zenfone9': { dpi: 510 }, 'oneplus_12': { dpi: 510 }, 'oneplus_12r': { dpi: 500 },
+            'oneplus_11': { dpi: 500 }, 'oneplus_11r': { dpi: 495 }, 'oneplus_10pro': { dpi: 490 },
+            'oneplus_10t': { dpi: 485 }, 'oneplus_nord3': { dpi: 470 }, 'google_pixel9': { dpi: 490 },
+            'google_pixel9pro': { dpi: 495 }, 'google_pixel9xl': { dpi: 500 }, 'google_pixel8': { dpi: 480 },
+            'google_pixel8pro': { dpi: 485 }, 'google_pixel8a': { dpi: 470 }, 'google_pixel7': { dpi: 470 },
+            'google_pixel7pro': { dpi: 475 }, 'google_pixel6': { dpi: 460 }, 'google_pixel6pro': { dpi: 465 },
+            'oppo_findx7': { dpi: 510 }, 'oppo_findx7ultra': { dpi: 515 }, 'oppo_findx6': { dpi: 500 },
+            'oppo_findx5': { dpi: 490 }, 'oppo_reno11': { dpi: 460 }, 'oppo_reno10': { dpi: 455 },
+            'oppo_reno9': { dpi: 450 }, 'realme_gt5': { dpi: 480 }, 'realme_gt5pro': { dpi: 485 },
+            'realme_gt3': { dpi: 470 }, 'realme_gt2': { dpi: 460 }, 'realme_12': { dpi: 440 },
+            'realme_12pro': { dpi: 445 }, 'realme_11': { dpi: 435 }, 'realme_narzo60': { dpi: 430 },
+            'honor_magic6': { dpi: 500 }, 'honor_magic6pro': { dpi: 505 }, 'honor_magic5': { dpi: 490 },
+            'honor_magic5pro': { dpi: 495 }, 'honor_90': { dpi: 460 }, 'honor_90pro': { dpi: 465 },
+            'honor_80': { dpi: 455 }, 'nothing_phone2': { dpi: 470 }, 'nothing_phone2a': { dpi: 465 },
+            'nothing_phone1': { dpi: 450 }, 'outro_outro': { dpi: 420 }
+        };
+
+        const nomesModelos = {
+            's24': 'Galaxy S24', 's24plus': 'Galaxy S24+', 's24ultra': 'Galaxy S24 Ultra', 's23': 'Galaxy S23', 's23plus': 'Galaxy S23+', 's23ultra': 'Galaxy S23 Ultra', 's22': 'Galaxy S22', 's22plus': 'Galaxy S22+', 's22ultra': 'Galaxy S22 Ultra', 's21': 'Galaxy S21', 's21plus': 'Galaxy S21+', 's21ultra': 'Galaxy S21 Ultra', 'a55': 'Galaxy A55', 'a54': 'Galaxy A54', 'a35': 'Galaxy A35', 'a34': 'Galaxy A34', 'a25': 'Galaxy A25', 'a15': 'Galaxy A15', 'a14': 'Galaxy A14', 'a05': 'Galaxy A05', 'zfold5': 'Z Fold 5', 'zfold4': 'Z Fold 4', 'zflip5': 'Z Flip 5', 'zflip4': 'Z Flip 4', 'm54': 'Galaxy M54', 'm34': 'Galaxy M34', 'f54': 'Galaxy F54', 'redmi13': 'Redmi Note 13', 'redmi13c': 'Redmi 13C', 'redmi12': 'Redmi Note 12', 'redmi12c': 'Redmi 12C', 'poco': 'Poco X6', 'pocox6': 'Poco X6 Pro', 'pocox5': 'Poco X5', 'pocof5': 'Poco F5', 'mi14': 'Xiaomi 14', 'mi13': 'Xiaomi 13', 'mi12': 'Xiaomi 12', 'redminote12': 'Redmi Note 12', 'redminote11': 'Redmi Note 11', 'redminote10': 'Redmi Note 10', '12t': 'Xiaomi 12T', '11t': 'Xiaomi 11T', 'g54': 'Moto G54', 'g53': 'Moto G53', 'g84': 'Moto G84', 'g73': 'Moto G73', 'g72': 'Moto G72', 'edge40': 'Edge 40', 'edge50': 'Edge 50', 'edge30': 'Edge 30', 'razr40': 'Razr 40', 'g100': 'Moto G100', 'iphone16pm': 'iPhone 16 Pro Max', 'iphone16p': 'iPhone 16 Pro', 'iphone16': 'iPhone 16', 'iphone16plus': 'iPhone 16 Plus', 'iphone15pm': 'iPhone 15 Pro Max', 'iphone15p': 'iPhone 15 Pro', 'iphone15': 'iPhone 15', 'iphone15plus': 'iPhone 15 Plus', 'iphone14pm': 'iPhone 14 Pro Max', 'iphone14p': 'iPhone 14 Pro', 'iphone14': 'iPhone 14', 'iphone14plus': 'iPhone 14 Plus', 'iphone13pm': 'iPhone 13 Pro Max', 'iphone13': 'iPhone 13', 'iphone13mini': 'iPhone 13 Mini', 'iphone12pm': 'iPhone 12 Pro Max', 'iphone12': 'iPhone 12', 'iphone12mini': 'iPhone 12 Mini', 'iphone11pm': 'iPhone 11 Pro Max', 'iphone11': 'iPhone 11', 'iphonese3': 'iPhone SE 3', 'iphonese2': 'iPhone SE 2', 'rog8': 'ROG Phone 8', 'rog8pro': 'ROG Phone 8 Pro', 'rog7': 'ROG Phone 7', 'rog7ultimate': 'ROG Phone 7 Ultimate', 'rog6': 'ROG Phone 6', 'zenfone10': 'Zenfone 10', 'zenfone9': 'Zenfone 9', '12': 'OnePlus 12', '12r': 'OnePlus 12R', '11': 'OnePlus 11', '11r': 'OnePlus 11R', '10pro': 'OnePlus 10 Pro', '10t': 'OnePlus 10T', 'nord3': 'Nord 3', 'pixel9': 'Pixel 9', 'pixel9pro': 'Pixel 9 Pro', 'pixel9xl': 'Pixel 9 XL', 'pixel8': 'Pixel 8', 'pixel8pro': 'Pixel 8 Pro', 'pixel8a': 'Pixel 8a', 'pixel7': 'Pixel 7', 'pixel7pro': 'Pixel 7 Pro', 'pixel6': 'Pixel 6', 'pixel6pro': 'Pixel 6 Pro', 'findx7': 'Find X7', 'findx7ultra': 'Find X7 Ultra', 'findx6': 'Find X6', 'findx5': 'Find X5', 'reno11': 'Reno 11', 'reno10': 'Reno 10', 'reno9': 'Reno 9', 'gt5': 'GT 5', 'gt5pro': 'GT 5 Pro', 'gt3': 'GT 3', 'gt2': 'GT 2', '12pro': 'Realme 12 Pro', 'narzo60': 'Narzo 60', 'magic6': 'Magic 6', 'magic6pro': 'Magic 6 Pro', 'magic5': 'Magic 5', 'magic5pro': 'Magic 5 Pro', '90': 'Honor 90', '90pro': 'Honor 90 Pro', '80': 'Honor 80', 'phone2': 'Phone (2)', 'phone2a': 'Phone (2a)', 'phone1': 'Phone (1)', 'outro': 'Outro'
+        };
+
+        const modelosPorMarca = {
+            samsung: ['s24', 's24plus', 's24ultra', 's23', 's23plus', 's23ultra', 's22', 's22plus', 's22ultra', 's21', 's21plus', 's21ultra', 'a55', 'a54', 'a35', 'a34', 'a25', 'a15', 'a14', 'a05', 'zfold5', 'zfold4', 'zflip5', 'zflip4', 'm54', 'm34', 'f54'],
+            xiaomi: ['redmi13', 'redmi13c', 'redmi12', 'redmi12c', 'poco', 'pocox6', 'pocox5', 'pocof5', 'mi14', 'mi13', 'mi12', 'redminote12', 'redminote11', 'redminote10', '12t', '11t'],
+            motorola: ['g54', 'g53', 'g84', 'g73', 'g72', 'edge40', 'edge50', 'edge30', 'razr40', 'g100'],
+            apple: ['iphone16pm', 'iphone16p', 'iphone16', 'iphone16plus', 'iphone15pm', 'iphone15p', 'iphone15', 'iphone15plus', 'iphone14pm', 'iphone14p', 'iphone14', 'iphone14plus', 'iphone13pm', 'iphone13', 'iphone13mini', 'iphone12pm', 'iphone12', 'iphone12mini', 'iphone11pm', 'iphone11', 'iphonese3', 'iphonese2'],
+            asus: ['rog8', 'rog8pro', 'rog7', 'rog7ultimate', 'rog6', 'zenfone10', 'zenfone9'],
+            oneplus: ['12', '12r', '11', '11r', '10pro', '10t', 'nord3'],
+            google: ['pixel9', 'pixel9pro', 'pixel9xl', 'pixel8', 'pixel8pro', 'pixel8a', 'pixel7', 'pixel7pro', 'pixel6', 'pixel6pro'],
+            oppo: ['findx7', 'findx7ultra', 'findx6', 'findx5', 'reno11', 'reno10', 'reno9'],
+            realme: ['gt5', 'gt5pro', 'gt3', 'gt2', '12', '12pro', '11', 'narzo60'],
+            honor: ['magic6', 'magic6pro', 'magic5', 'magic5pro', '90', '90pro', '80'],
+            nothing: ['phone2', 'phone2a', 'phone1'],
+            outro: ['outro']
+        };
+
+        // ================================================================
+        // PERFIS E FAMOSOS
+        // ================================================================
+        const perfis = {
+            agressivo: { geral: 185, redDot: 175, mira2x: 170, mira4x: 155, sniper: 95, freeLook: 100 },
+            equilibrado: { geral: 155, redDot: 145, mira2x: 140, mira4x: 125, sniper: 65, freeLook: 80 },
+            sniper: { geral: 120, redDot: 110, mira2x: 100, mira4x: 85, sniper: 35, freeLook: 60 }
+        };
+
+        const famosos = [
+            { nome: 'Nobru', time: 'Fluxo', geral: 128, redDot: 147, mira2x: 157, mira4x: 140, sniper: 48, freeLook: 85 },
+            { nome: 'Cerol', time: 'Fluxo', geral: 45, redDot: 37, mira2x: 70, mira4x: 20, sniper: 3, freeLook: 40 },
+            { nome: 'Mts', time: 'Fluxo W7M', geral: 170, redDot: 160, mira2x: 150, mira4x: 130, sniper: 60, freeLook: 90 },
+            { nome: 'Diollan', time: 'Fluxo', geral: 155, redDot: 145, mira2x: 138, mira4x: 118, sniper: 50, freeLook: 82 },
+            { nome: 'Bops', time: 'Fluxo W7M', geral: 160, redDot: 150, mira2x: 145, mira4x: 125, sniper: 45, freeLook: 80 },
+            { nome: 'MT7', time: 'Fluxo W7M', geral: 175, redDot: 165, mira2x: 155, mira4x: 135, sniper: 55, freeLook: 88 },
+            { nome: 'Trap', time: 'LOUD', geral: 168, redDot: 158, mira2x: 148, mira4x: 128, sniper: 50, freeLook: 85 },
+            { nome: 'Yago', time: 'LOS', geral: 150, redDot: 140, mira2x: 135, mira4x: 115, sniper: 40, freeLook: 78 },
+            { nome: 'Raone7', time: 'LOS', geral: 148, redDot: 138, mira2x: 133, mira4x: 113, sniper: 38, freeLook: 76 },
+            { nome: 'Two9', time: 'LOUD', geral: 94, redDot: 100, mira2x: 97, mira4x: 91, sniper: 0, freeLook: 50 },
+            { nome: 'Sofiaz', time: 'Fluxo', geral: 182, redDot: 172, mira2x: 168, mira4x: 152, sniper: 88, freeLook: 98 },
+            { nome: 'Tunde', time: 'Fluxo', geral: 140, redDot: 130, mira2x: 125, mira4x: 110, sniper: 45, freeLook: 75 },
+            { nome: 'Deusa', time: 'XLD Gaming', geral: 165, redDot: 155, mira2x: 148, mira4x: 130, sniper: 50, freeLook: 82 },
+            { nome: 'Marechal', time: 'Guilda', geral: 150, redDot: 140, mira2x: 135, mira4x: 115, sniper: 42, freeLook: 78 },
+            { nome: 'Phzin7', time: 'Streamer', geral: 135, redDot: 125, mira2x: 130, mira4x: 110, sniper: 40, freeLook: 70 },
+            { nome: 'Phzin Mobilador', time: 'Streamer', geral: 140, redDot: 130, mira2x: 120, mira4x: 100, sniper: 35, freeLook: 75 },
+            { nome: 'Megadragon', time: 'Pro Player', geral: 155, redDot: 145, mira2x: 140, mira4x: 120, sniper: 45, freeLook: 80 },
+            { nome: 'Apelapato', time: 'Streamer', geral: 130, redDot: 120, mira2x: 115, mira4x: 95, sniper: 30, freeLook: 68 },
+            { nome: 'Mandela', time: 'Pro Player', geral: 148, redDot: 138, mira2x: 133, mira4x: 113, sniper: 40, freeLook: 76 },
+            { nome: 'Zangado7x', time: 'Streamer', geral: 160, redDot: 150, mira2x: 145, mira4x: 125, sniper: 50, freeLook: 82 },
+            { nome: 'LevelUP', time: 'Pro Player', geral: 155, redDot: 145, mira2x: 140, mira4x: 120, sniper: 45, freeLook: 80 },
+            { nome: 'Onext', time: 'Pro Player', geral: 160, redDot: 150, mira2x: 145, mira4x: 125, sniper: 50, freeLook: 82 },
+            { nome: 'BlackN444', time: 'Pro Player', geral: 145, redDot: 135, mira2x: 130, mira4x: 110, sniper: 40, freeLook: 76 }
+        ];
+    </script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #0a0505; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; background-image: radial-gradient(ellipse at 30% 10%, #1f0a0a 0%, #0a0505 70%); }
+        .container { max-width: 720px; width: 100%; background: #0f0808; border-radius: 24px; padding: 24px 22px 30px; border: 1px solid rgba(220, 38, 38, 0.20); box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8), 0 0 40px rgba(220, 38, 38, 0.04); position: relative; }
+        .container::before { content: ''; position: absolute; top: -1px; left: 40%; width: 20%; height: 2px; background: linear-gradient(90deg, transparent, #dc2626, transparent); filter: blur(4px); }
+        .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; flex-wrap: wrap; gap: 10px; }
+        .logo { display: flex; align-items: center; gap: 14px; }
+        .logo-icon { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 28px; color: #dc2626; text-shadow: 0 0 20px rgba(220, 38, 38, 0.3); background: rgba(220, 38, 38, 0.06); width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; border-radius: 12px; border: 1px solid rgba(220, 38, 38, 0.20); }
+        .logo-text { line-height: 1.2; }
+        .logo-text .qzz { font-family: 'Orbitron', sans-serif; font-size: 22px; font-weight: 800; letter-spacing: -0.5px; color: #fff; }
+        .logo-text .qzz span { color: #dc2626; text-shadow: 0 0 12px rgba(220, 38, 38, 0.3); }
+        .logo-text .community { font-family: 'Inter', sans-serif; font-weight: 600; font-size: 13px; color: #a08080; display: block; letter-spacing: 2px; text-transform: uppercase; }
+        .version-badge { font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700; color: #dc2626; border: 1px solid rgba(220, 38, 38, 0.25); padding: 4px 14px; border-radius: 30px; background: rgba(220, 38, 38, 0.06); text-shadow: 0 0 8px rgba(220, 38, 38, 0.15); letter-spacing: 0.5px; }
+        .card { background: #130a0a; border-radius: 18px; padding: 18px 16px; margin-bottom: 18px; border: 1px solid rgba(220, 38, 38, 0.08); box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4); position: relative; transition: border-color 0.2s; }
+        .card:hover { border-color: rgba(220, 38, 38, 0.18); }
+        .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; border-bottom: 1px solid rgba(220, 38, 38, 0.06); padding-bottom: 10px; }
+        .card-title { font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 13px; color: #dcc8c8; display: flex; align-items: center; gap: 10px; letter-spacing: 0.3px; }
+        .card-title .icon { font-size: 16px; filter: drop-shadow(0 0 6px rgba(220, 38, 38, 0.2)); }
+        .badge { font-family: 'Orbitron', sans-serif; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 4px 14px; border-radius: 30px; background: linear-gradient(135deg, #dc2626, #991b1b); color: #fff; box-shadow: 0 0 20px rgba(220, 38, 38, 0.15); }
+        .badge-green { background: linear-gradient(135deg, #b91c1c, #7f1d1d); box-shadow: 0 0 20px rgba(220, 38, 38, 0.10); }
+        label { display: block; font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 700; color: #a08080; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 4px; margin-top: 14px; }
+        label:first-of-type { margin-top: 0; }
+        select, input { width: 100%; padding: 12px 16px; background: #0d0606; border: 1px solid rgba(220, 38, 38, 0.15); border-radius: 12px; color: #f0e0e0; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500; outline: none; transition: 0.2s; -webkit-appearance: none; appearance: none; }
+        select:focus, input:focus { border-color: #dc2626; box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.08); }
+        select option { background: #0d0606; color: #f0e0e0; }
+        select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23dc2626' stroke-width='2' fill='none' opacity='0.5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 40px; }
+        .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .slider-container { margin-top: 14px; }
+        .slider-container .slider-header { display: flex; justify-content: space-between; font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 700; color: #a08080; text-transform: uppercase; letter-spacing: 0.5px; }
+        .slider-container .slider-header span:last-child { color: #dc2626; text-shadow: 0 0 10px rgba(220, 38, 38, 0.2); }
+        input[type="range"] { width: 100%; height: 6px; -webkit-appearance: none; background: #1f0a0a; border: none; border-radius: 10px; outline: none; padding: 0; margin-top: 8px; box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6); }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: #dc2626; border: 2px solid #dc2626; border-radius: 50%; cursor: pointer; box-shadow: 0 0 20px rgba(220, 38, 38, 0.3); transition: 0.1s; }
+        input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.1); }
+        input[type="range"]::-moz-range-thumb { width: 18px; height: 18px; background: #dc2626; border: 2px solid #dc2626; border-radius: 50%; cursor: pointer; }
+        .btn { width: 100%; padding: 16px; border: none; border-radius: 14px; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 13px; cursor: pointer; transition: 0.15s; margin-top: 18px; letter-spacing: 0.5px; text-transform: uppercase; background: linear-gradient(135deg, #dc2626, #991b1b); color: #fff; box-shadow: 0 6px 24px rgba(220, 38, 38, 0.15); }
+        .btn:active { transform: scale(0.97); }
+        .btn:disabled { opacity: 0.6; cursor: wait; }
+        .btn-secondary { background: transparent; border: 1px solid rgba(220, 38, 38, 0.12); color: #c0a0a0; box-shadow: none; font-family: 'Inter', sans-serif; font-weight: 600; }
+        .btn-secondary:active { background: rgba(220, 38, 38, 0.04); }
+        .btn-key { width: auto; padding: 12px 28px; margin-top: 0; flex-shrink: 0; font-size: 12px; }
+        .btn-copy { background: rgba(220, 38, 38, 0.06); border: 1px solid rgba(220, 38, 38, 0.12); color: #d08888; padding: 6px 16px; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 12px; cursor: pointer; transition: 0.15s; border-radius: 10px; margin-top: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .btn-copy:active { background: rgba(220, 38, 38, 0.12); }
+        .btn-small { padding: 10px 18px; border: none; border-radius: 10px; background: rgba(220, 38, 38, 0.08); color: #d08888; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 12px; cursor: pointer; transition: 0.15s; border: 1px solid rgba(220, 38, 38, 0.08); }
+        .btn-small:active { background: rgba(220, 38, 38, 0.15); }
+        .result-box { background: #0a0505; border-radius: 16px; padding: 14px 16px; margin-top: 18px; border-left: 4px solid #dc2626; box-shadow: 0 0 30px rgba(220, 38, 38, 0.02); animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { 0% { opacity: 0; transform: translateY(8px); } 100% { opacity: 1; transform: translateY(0); } }
+        .result-item { display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid rgba(220, 38, 38, 0.04); }
+        .result-item:last-child { border-bottom: none; }
+        .result-item .label { font-family: 'Inter', sans-serif; font-weight: 500; color: #a08080; font-size: 14px; }
+        .result-item .value { font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 15px; color: #f0e0e0; }
+        .result-item .value.highlight { color: #dc2626; text-shadow: 0 0 12px rgba(220, 38, 38, 0.2); }
+        .dpi-box { background: #0a0505; border-radius: 14px; padding: 12px 16px; margin-top: 14px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(220, 38, 38, 0.06); }
+        .dpi-box .label { font-family: 'Inter', sans-serif; font-weight: 500; color: #a08080; font-size: 14px; }
+        .dpi-box .value { font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 22px; color: #dc2626; text-shadow: 0 0 16px rgba(220, 38, 38, 0.12); }
+        .weapon-tips { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 12px; border-top: 1px solid rgba(220, 38, 38, 0.06); padding-top: 12px; }
+        .weapon-tips span { background: rgba(220, 38, 38, 0.04); padding: 4px 14px; border-radius: 30px; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500; color: #a08080; border: 1px solid rgba(220, 38, 38, 0.06); }
+        .weapon-tips span strong { color: #dc2626; font-family: 'Orbitron', sans-serif; font-weight: 700; margin-left: 4px; }
+        .copy-area { display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap; }
+        .tip { font-family: 'Inter', sans-serif; font-size: 12px; color: #6a5050; text-align: center; margin-top: 12px; font-weight: 500; letter-spacing: 0.3px; }
+        .save-area { display: flex; gap: 10px; align-items: center; margin-top: 12px; flex-wrap: wrap; }
+        .save-area input { flex: 1; padding: 10px 14px; font-family: 'Inter', sans-serif; font-size: 14px; background: #0a0505; border: 1px solid rgba(220, 38, 38, 0.12); border-radius: 10px; color: #f0e0e0; min-width: 120px; }
+        .save-area input:focus { border-color: #dc2626; }
+        .history-list { margin-top: 10px; font-family: 'Inter', sans-serif; font-size: 13px; color: #a08080; max-height: 120px; overflow-y: auto; }
+        .history-list::-webkit-scrollbar { width: 4px; }
+        .history-list::-webkit-scrollbar-track { background: rgba(220, 38, 38, 0.02); border-radius: 10px; }
+        .history-list::-webkit-scrollbar-thumb { background: #3a1a1a; border-radius: 10px; }
+        .history-list .h-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(220, 38, 38, 0.04); padding: 6px 0; }
+        .history-list .h-item .h-name { color: #dcc8c8; font-weight: 600; }
+        .history-list .h-item .h-sensi { font-family: 'Orbitron', sans-serif; font-size: 11px; color: #a06060; }
+        .history-list .h-item .h-load { color: #dc2626; cursor: pointer; font-weight: 600; font-size: 12px; padding: 2px 10px; border-radius: 20px; background: rgba(220, 38, 38, 0.04); transition: 0.15s; }
+        .history-list .h-item .h-load:hover { background: rgba(220, 38, 38, 0.08); }
+        .streamers-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 4px; }
+        .streamer-card { background: #0a0505; border: 1px solid rgba(220, 38, 38, 0.10); border-radius: 12px; padding: 12px 14px; cursor: pointer; transition: all 0.2s ease; position: relative; }
+        .streamer-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: #dc2626; opacity: 0; transition: opacity 0.2s; }
+        .streamer-card:hover { border-color: rgba(220, 38, 38, 0.30); background: #0f0606; transform: translateY(-2px); box-shadow: 0 4px 20px rgba(220, 38, 38, 0.06); }
+        .streamer-card:hover::before { opacity: 1; }
+        .streamer-card .s-nome { font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 14px; color: #f0e0e0; letter-spacing: 0.3px; }
+        .streamer-card .s-time { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 11px; color: #a08080; margin-top: 2px; letter-spacing: 0.3px; }
+        .streamer-card .s-badge-pro { position: absolute; top: 8px; right: 10px; font-family: 'Orbitron', sans-serif; font-size: 8px; color: #dc2626; border: 1px solid rgba(220, 38, 38, 0.15); padding: 2px 10px; border-radius: 30px; background: rgba(220, 38, 38, 0.04); letter-spacing: 0.5px; }
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; animation: fadeIn 0.25s ease; }
+        .modal-overlay.ativo { display: flex; }
+        .modal { background: #130a0a; border: 1px solid rgba(220, 38, 38, 0.20); border-radius: 24px; padding: 28px 24px 32px; max-width: 480px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8); position: relative; }
+        .modal::-webkit-scrollbar { width: 4px; }
+        .modal::-webkit-scrollbar-track { background: rgba(220, 38, 38, 0.02); border-radius: 10px; }
+        .modal::-webkit-scrollbar-thumb { background: #3a1a1a; border-radius: 10px; }
+        .modal .modal-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; border-bottom: 1px solid rgba(220, 38, 38, 0.06); padding-bottom: 12px; }
+        .modal .modal-header .m-nome { font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 22px; color: #f0e0e0; }
+        .modal .modal-header .m-time { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 14px; color: #a08080; margin-top: 2px; }
+        .modal .modal-close { background: none; border: 1px solid rgba(220, 38, 38, 0.15); color: #a08080; width: 36px; height: 36px; border-radius: 50%; font-size: 20px; cursor: pointer; transition: 0.15s; display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; }
+        .modal .modal-close:hover { border-color: #dc2626; color: #dc2626; }
+        .modal .sensi-grid-modal { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; margin-top: 8px; }
+        .modal .sensi-grid-modal .s-item { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(220, 38, 38, 0.04); font-family: 'Inter', sans-serif; font-size: 14px; color: #a08080; }
+        .modal .sensi-grid-modal .s-item strong { font-family: 'Orbitron', sans-serif; color: #dc2626; font-weight: 700; }
+        .modal .m-dpi { margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(220, 38, 38, 0.06); display: flex; justify-content: space-between; font-family: 'Inter', sans-serif; font-size: 14px; color: #a08080; }
+        .modal .m-dpi strong { font-family: 'Orbitron', sans-serif; color: #dc2626; font-size: 18px; }
+        .modal .m-btn-aplicar { width: 100%; padding: 14px; margin-top: 16px; border: none; border-radius: 12px; background: linear-gradient(135deg, #dc2626, #991b1b); color: #fff; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 12px; cursor: pointer; transition: 0.15s; letter-spacing: 0.5px; }
+        .modal .m-btn-aplicar:active { transform: scale(0.97); }
+        .modal .m-tag { display: inline-block; font-family: 'Orbitron', sans-serif; font-size: 9px; color: #dc2626; border: 1px solid rgba(220, 38, 38, 0.15); padding: 2px 12px; border-radius: 30px; margin-top: 4px; background: rgba(220, 38, 38, 0.04); }
+        .btn-instalar { background: transparent; border: 1px solid rgba(220, 38, 38, 0.20); color: #d08888; padding: 6px 18px; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; border-radius: 30px; transition: 0.15s; display: none; }
+        .btn-instalar:hover { border-color: #dc2626; color: #dc2626; }
+        .btn-instalar.visivel { display: inline-block; }
+        .key-area { display: flex; gap: 12px; align-items: center; }
+        .key-area input { flex: 1; }
+        .key-status { font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500; margin-top: 10px; min-height: 18px; color: #a08080; letter-spacing: 0.3px; }
+        .key-status.erro { color: #dc2626; }
+        .key-status.ok { color: #4ade80; }
+        .footer { text-align: center; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500; color: #4a3030; margin-top: 22px; letter-spacing: 0.8px; border-top: 1px solid rgba(220, 38, 38, 0.06); padding-top: 18px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .footer .footer-links { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+        .footer span { color: #dc2626; font-weight: 700; font-family: 'Orbitron', sans-serif; font-size: 11px; }
+        .hidden { display: none !important; }
+
+        @media (max-width: 540px) {
+            .container { padding: 16px 14px 20px; border-radius: 18px; }
+            .logo-text .qzz { font-size: 18px; }
+            .logo-icon { width: 40px; height: 40px; font-size: 22px; }
+            .row-2 { grid-template-columns: 1fr; gap: 0; }
+            .key-area { flex-wrap: wrap; }
+            .key-area input { flex: 1 1 100%; }
+            .btn-key { width: 100%; }
+            .version-badge { font-size: 9px; padding: 2px 10px; }
+            .streamers-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+            .streamer-card .s-nome { font-size: 12px; }
+            .streamer-card .s-time { font-size: 10px; }
+            .weapon-tips span { font-size: 11px; padding: 2px 10px; }
+            .save-area input { flex: 1 1 100%; }
+            .save-area .btn-small { flex: 1 1 auto; }
+            .modal { padding: 20px 16px 24px; margin: 10px; }
+            .modal .sensi-grid-modal { grid-template-columns: 1fr; gap: 4px; }
+            .modal .modal-header .m-nome { font-size: 18px; }
         }
 
-        // ==========================================
-        // UI LOGIC
-        // ==========================================
-        function toggleCard(card) {
-            card.classList.toggle('active');
-            const name = card.querySelector('h4').innerText;
-            const isActive = card.classList.contains('active');
-            showToast(name + (isActive ? ' ativado' : ' desativado'));
+        @media (max-width: 400px) {
+            .streamers-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="app">
+
+        <!-- TELA DE CHAVE -->
+        <div id="telaChave">
+            <div class="header">
+                <div class="logo">
+                    <div class="logo-icon">⚙</div>
+                    <div>
+                        <div class="logo-text">
+                            <span class="qzz">QZZ<span>GEN</span></span>
+                            <span class="community">> gerador de sensi</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="version-badge">v4.2</div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title"><span class="icon">|</span> acesso</span>
+                    <span class="badge">key</span>
+                </div>
+                <p style="color:#a08080; font-family:'Inter',sans-serif; font-weight:500; font-size:15px; margin-bottom:14px;">insira a chave para acessar o gerador</p>
+                <div class="key-area">
+                    <input type="text" id="inputChave" placeholder="digite a chave..." value="" autocomplete="off" spellcheck="false">
+                    <button class="btn btn-key" id="btnValidarChave">entrar</button>
+                </div>
+                <div class="key-status" id="keyStatus"></div>
+            </div>
+            <div class="footer"><span>QZZ GEN</span> • validação de chaves online</div>
+        </div>
+
+        <!-- TELA PRINCIPAL -->
+        <div id="telaPrincipal" class="hidden">
+            <div class="header">
+                <div class="logo">
+                    <div class="logo-icon">⚙</div>
+                    <div>
+                        <div class="logo-text">
+                            <span class="qzz">QZZ<span>GEN</span></span>
+                            <span class="community">> gerador de sensi</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="version-badge">FF 2026</div>
+            </div>
+
+            <!-- GERADOR -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title"><span class="icon">|</span> dispositivo</span>
+                    <span class="badge">0-200</span>
+                </div>
+
+                <label for="sistema">sistema</label>
+                <select id="sistema">
+                    <option value="android">android</option>
+                    <option value="ios">ios</option>
+                </select>
+
+                <div class="row-2">
+                    <div>
+                        <label for="marca">marca</label>
+                        <select id="marca">
+                            <option value="samsung">samsung</option>
+                            <option value="xiaomi">xiaomi</option>
+                            <option value="motorola">motorola</option>
+                            <option value="apple">apple</option>
+                            <option value="asus">asus</option>
+                            <option value="oneplus">oneplus</option>
+                            <option value="google">google</option>
+                            <option value="oppo">oppo</option>
+                            <option value="realme">realme</option>
+                            <option value="honor">honor</option>
+                            <option value="nothing">nothing</option>
+                            <option value="outro">outro</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="modelo">modelo</label>
+                        <select id="modelo"></select>
+                    </div>
+                </div>
+
+                <label for="estilo">estilo de jogo</label>
+                <select id="estilo">
+                    <option value="agressivo">> agressivo (rush)</option>
+                    <option value="equilibrado" selected>> equilibrado</option>
+                    <option value="sniper">> sniper / precisao</option>
+                </select>
+
+                <div class="slider-container">
+                    <div class="slider-header">
+                        <span>precisao</span>
+                        <span id="sliderValueLabel">equilibrado</span>
+                    </div>
+                    <input type="range" id="precisaoSlider" min="0" max="100" value="50">
+                </div>
+
+                <button class="btn" id="btnGerar">> gerar sensibilidade</button>
+
+                <div id="resultadoGerado" class="hidden">
+                    <div class="result-box">
+                        <div class="result-item"><span class="label">geral</span><span class="value highlight" id="rGeral">--</span></div>
+                        <div class="result-item"><span class="label">red dot (ponto)</span><span class="value" id="rRedDot">--</span></div>
+                        <div class="result-item"><span class="label">mira 2x</span><span class="value" id="rMira2x">--</span></div>
+                        <div class="result-item"><span class="label">mira 4x</span><span class="value" id="rMira4x">--</span></div>
+                        <div class="result-item"><span class="label">sniper (awm)</span><span class="value" id="rSniper">--</span></div>
+                        <div class="result-item"><span class="label">camera livre</span><span class="value" id="rFreeLook">--</span></div>
+                    </div>
+                    <div class="dpi-box">
+                        <span class="label">| dpi sugerido</span>
+                        <span class="value" id="rDpi">--</span>
+                    </div>
+                    <div class="weapon-tips">
+                        <span>m4: <strong id="tipM4">--</strong></span>
+                        <span>m1887: <strong id="tipM1887">--</strong></span>
+                        <span>awm: <strong id="tipAWM">--</strong></span>
+                        <span>sniper: <strong id="tipSniper">--</strong></span>
+                    </div>
+
+                    <div class="save-area">
+                        <input type="text" id="saveName" placeholder="nome da config..." maxlength="20">
+                        <button class="btn-small" id="btnSalvarConfig">[ salvar ]</button>
+                        <button class="btn-small" id="btnCompartilhar">[ compartilhar ]</button>
+                    </div>
+
+                    <div class="copy-area">
+                        <button class="btn-copy" id="btnCopiarResultado">| copiar config</button>
+                    </div>
+                    <div class="tip">> ajuste fino no modo treino para a perfeicao</div>
+                </div>
+            </div>
+
+            <!-- HISTÓRICO -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title"><span class="icon">|</span> minhas configs</span>
+                    <span class="badge badge-green">salvas</span>
+                </div>
+                <div class="history-list" id="historyList"></div>
+            </div>
+
+            <!-- STREAMERS -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title"><span class="icon">|</span> streamers</span>
+                    <span class="badge badge-green">2026</span>
+                </div>
+                <div class="streamers-grid" id="streamersGrid"></div>
+            </div>
+
+            <button class="btn btn-secondary" id="btnSair">> sair (trocar chave)</button>
+
+            <button class="btn btn-instalar" id="btnInstalar">📲 instalar app</button>
+
+            <div class="footer"><span>QZZ GEN</span> • free fire 2026</div>
+        </div>
+    </div>
+
+    <!-- MODAL -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <div>
+                    <div class="m-nome" id="mNome">Nobru</div>
+                    <div class="m-time" id="mTime">Fluxo</div>
+                    <span class="m-tag" id="mTag">PRO PLAYER</span>
+                </div>
+                <button class="modal-close" id="modalClose">✕</button>
+            </div>
+            <div class="sensi-grid-modal" id="mSensiGrid">
+                <div class="s-item">geral <strong id="mGeral">--</strong></div>
+                <div class="s-item">red dot <strong id="mRedDot">--</strong></div>
+                <div class="s-item">mira 2x <strong id="mMira2x">--</strong></div>
+                <div class="s-item">mira 4x <strong id="mMira4x">--</strong></div>
+                <div class="s-item">sniper (awm) <strong id="mSniper">--</strong></div>
+                <div class="s-item">free look <strong id="mFreeLook">--</strong></div>
+            </div>
+            <div class="m-dpi">
+                <span>dpi sugerido</span>
+                <strong id="mDpi">--</strong>
+            </div>
+            <button class="m-btn-aplicar" id="mAplicarSensi">> aplicar esta sensibilidade</button>
+        </div>
+    </div>
+
+    <script>
+        // ================================================================
+        // LÓGICA DE GERAÇÃO
+        // ================================================================
+        function gerarSensi(marca, modelo, sistema, estilo, precisao) {
+            const key = `${marca}_${modelo}`;
+            const device = baseDispositivos[key] || baseDispositivos['outro_outro'];
+            const perfilBase = perfis[estilo] || perfis.equilibrado;
+
+            let fator = 1.0;
+            if (sistema === 'ios') fator = 1.05;
+
+            const sliderFactor = 1 + ((precisao - 50) / 100) * 0.3;
+            fator *= sliderFactor;
+
+            const dpiRef = device.dpi || 420;
+            if (dpiRef > 550) fator *= 0.92;
+            else if (dpiRef < 400) fator *= 1.08;
+
+            const arredondar = (v) => Math.min(200, Math.max(0, Math.round(v * fator)));
+
+            return {
+                geral: arredondar(perfilBase.geral),
+                redDot: arredondar(perfilBase.redDot),
+                mira2x: arredondar(perfilBase.mira2x),
+                mira4x: arredondar(perfilBase.mira4x),
+                sniper: arredondar(perfilBase.sniper),
+                freeLook: arredondar(perfilBase.freeLook),
+                dpi: device.dpi
+            };
         }
 
-        function switchTab(tabId, el) {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.getElementById('sec-' + tabId).classList.add('active');
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            el.classList.add('active');
-        }
+        // ================================================================
+        // INTERFACE
+        // ================================================================
+        const telaChave = document.getElementById('telaChave');
+        const telaPrincipal = document.getElementById('telaPrincipal');
+        const inputChave = document.getElementById('inputChave');
+        const btnValidar = document.getElementById('btnValidarChave');
+        const btnSair = document.getElementById('btnSair');
+        const keyStatus = document.getElementById('keyStatus');
 
-        function updateClock() {
-            const now = new Date();
-            document.getElementById('clock').textContent = 
-                String(now.getHours()).padStart(2,'0') + ':' + 
-                String(now.getMinutes()).padStart(2,'0');
-        }
+        const sistema = document.getElementById('sistema');
+        const marca = document.getElementById('marca');
+        const modelo = document.getElementById('modelo');
+        const estilo = document.getElementById('estilo');
+        const precisaoSlider = document.getElementById('precisaoSlider');
+        const sliderValueLabel = document.getElementById('sliderValueLabel');
+        const btnGerar = document.getElementById('btnGerar');
 
-        // ==========================================
-        // ZIP UPLOAD
-        // ==========================================
-        const zipArea = document.getElementById('zipArea');
-        const zipInput = document.getElementById('zipInput');
-        const zipName = document.getElementById('zipName');
-        const zipBtn = document.getElementById('zipInjectBtn');
-        let selectedFile = null;
+        const resultadoGerado = document.getElementById('resultadoGerado');
+        const rGeral = document.getElementById('rGeral');
+        const rRedDot = document.getElementById('rRedDot');
+        const rMira2x = document.getElementById('rMira2x');
+        const rMira4x = document.getElementById('rMira4x');
+        const rSniper = document.getElementById('rSniper');
+        const rFreeLook = document.getElementById('rFreeLook');
+        const rDpi = document.getElementById('rDpi');
+        const tipM4 = document.getElementById('tipM4');
+        const tipM1887 = document.getElementById('tipM1887');
+        const tipAWM = document.getElementById('tipAWM');
+        const tipSniper = document.getElementById('tipSniper');
+        const btnCopiar = document.getElementById('btnCopiarResultado');
+        const btnSalvar = document.getElementById('btnSalvarConfig');
+        const btnCompartilhar = document.getElementById('btnCompartilhar');
+        const saveName = document.getElementById('saveName');
+        const historyList = document.getElementById('historyList');
 
-        document.getElementById('zipTrigger').addEventListener('click', () => zipInput.click());
-        
-        zipArea.addEventListener('click', (e) => {
-            if (!e.target.closest('#zipTrigger')) zipInput.click();
+        const streamersGrid = document.getElementById('streamersGrid');
+
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalClose = document.getElementById('modalClose');
+        const mNome = document.getElementById('mNome');
+        const mTime = document.getElementById('mTime');
+        const mTag = document.getElementById('mTag');
+        const mGeral = document.getElementById('mGeral');
+        const mRedDot = document.getElementById('mRedDot');
+        const mMira2x = document.getElementById('mMira2x');
+        const mMira4x = document.getElementById('mMira4x');
+        const mSniper = document.getElementById('mSniper');
+        const mFreeLook = document.getElementById('mFreeLook');
+        const mDpi = document.getElementById('mDpi');
+        const mAplicar = document.getElementById('mAplicarSensi');
+
+        const btnInstalar = document.getElementById('btnInstalar');
+
+        let ultimoResultado = null;
+        let streamerSelecionado = null;
+
+        precisaoSlider.addEventListener('input', function() {
+            const val = parseInt(this.value);
+            if (val < 30) sliderValueLabel.textContent = 'precisao maxima';
+            else if (val < 45) sliderValueLabel.textContent = 'mais preciso';
+            else if (val <= 55) sliderValueLabel.textContent = 'equilibrado';
+            else if (val <= 70) sliderValueLabel.textContent = 'mais agil';
+            else sliderValueLabel.textContent = 'agilidade maxima';
         });
 
-        zipArea.addEventListener('dragover', (e) => { e.preventDefault(); zipArea.classList.add('dragover'); });
-        zipArea.addEventListener('dragleave', () => zipArea.classList.remove('dragover'));
-        zipArea.addEventListener('drop', (e) => {
-            e.preventDefault(); zipArea.classList.remove('dragover');
-            if (e.dataTransfer.files.length) processFile(e.dataTransfer.files[0]);
-        });
-
-        zipInput.addEventListener('change', function() {
-            if (this.files.length) processFile(this.files[0]);
-        });
-
-        function processFile(file) {
-            if (!file.name.endsWith('.zip')) return showToast('Apenas .zip', 'error');
-            selectedFile = file;
-            zipName.textContent = file.name;
-            zipBtn.disabled = false;
-            showToast('Arquivo carregado');
+        function setKeyStatus(msg, tipo) {
+            keyStatus.textContent = msg || '';
+            keyStatus.className = 'key-status' + (tipo ? ' ' + tipo : '');
         }
 
-        zipBtn.addEventListener('click', function() {
-            if (!selectedFile) return;
-            this.disabled = true;
-            this.textContent = 'Injetando...';
-            setTimeout(() => {
-                showToast('✓ Arquivo injetado');
-                this.disabled = false;
-                this.textContent = 'Injetar Arquivo';
-            }, 2000);
-        });
-
-        // ==========================================
-        // EXPLOIT (Com animação de bolha)
-        // ==========================================
-        let exploitando = false;
-
-        function executeExploit(modo, event) {
-            if (exploitando) return;
-            exploitando = true;
-
-            // Efeito de Bolha
-            if (event) {
-                const btn = event.currentTarget;
-                const rect = btn.getBoundingClientRect();
-                const x = event.clientX - rect.left;
-                const y = event.clientY - rect.top;
-                
-                const bubble = document.createElement('span');
-                bubble.className = 'bubble-effect';
-                bubble.style.left = x + 'px';
-                bubble.style.top = y + 'px';
-                bubble.style.width = '20px';
-                bubble.style.height = '20px';
-                btn.appendChild(bubble);
-                
-                setTimeout(() => bubble.remove(), 600);
+        async function entrarComChave() {
+            const chave = inputChave.value.trim();
+            if (!chave) {
+                setKeyStatus('digite uma chave.', 'erro');
+                inputChave.focus();
+                return;
             }
 
-            const btnN = document.getElementById('exploitNormalBtn');
-            const btnM = document.getElementById('exploitMaxBtn');
-            const loading = document.getElementById('loadingScreen');
-            const text = document.getElementById('loadingText');
-            
-            btnN.disabled = true;
-            btnM.disabled = true;
+            const textoOriginal = btnValidar.textContent;
+            btnValidar.disabled = true;
+            btnValidar.textContent = '...';
+            setKeyStatus('validando...', '');
 
-            const isMax = modo === 'max';
-            text.textContent = isMax ? 'Executando exploit MAX...' : 'Executando exploit Normal...';
-            loading.style.display = 'flex';
-            
-            setTimeout(() => {
-                loading.style.display = 'none';
-                btnN.disabled = false;
-                btnM.disabled = false;
-                exploitando = false;
-                
-                showToast(isMax ? 'Exploit MAX executado' : 'Exploit Normal executado');
-                window.location.href = 'freefire://';
-                
+            const resultado = await validarChaveRemota(chave);
+
+            btnValidar.disabled = false;
+            btnValidar.textContent = textoOriginal;
+
+            if (resultado.ok) {
+                setKeyStatus('chave valida! entrando...', 'ok');
+                try {
+                    localStorage.setItem('qzz_key_data', JSON.stringify({
+                        key: chave,
+                        expira: resultado.expira,
+                        hwid: resultado.hwid,
+                        validada_em: new Date().toISOString()
+                    }));
+                } catch (e) {}
+
                 setTimeout(() => {
-                    if (!document.hidden) window.location.href = 'https://apps.apple.com/app/free-fire/id1300146617';
-                }, 2000);
-            }, isMax ? 3500 : 2500);
+                    telaChave.classList.add('hidden');
+                    telaPrincipal.classList.remove('hidden');
+                    setKeyStatus('', '');
+                    renderStreamers();
+                    carregarSalvo();
+                    renderHistory();
+                    iniciarWatcherDeSessao();
+                }, 400);
+            } else {
+                const msgs = {
+                    vazia: 'digite uma chave.',
+                    invalida: 'x chave invalida ou nao encontrada.',
+                    expirada: 'x esta chave expirou.',
+                    hwid: 'x esta chave ja esta em uso em outro dispositivo.',
+                    banida: 'x esta chave foi banida.',
+                    pausada: 'x esta chave foi pausada pelo admin.',
+                    erro_servidor: 'x erro no servidor. tente novamente.',
+                    offline: 'x sem conexao com o servidor (CORS ou offline).'
+                };
+                setKeyStatus(msgs[resultado.motivo] || 'x chave invalida!', 'erro');
+                inputChave.focus();
+                inputChave.select();
+            }
         }
 
-        // ==========================================
-        // TOAST
-        // ==========================================
-        let toastTimer;
-        function showToast(msg, type = '') {
-            const el = document.getElementById('toast');
-            el.textContent = msg;
-            el.className = 'toast' + (type === 'error' ? ' error' : '');
-            el.classList.add('show');
-            clearTimeout(toastTimer);
-            toastTimer = setTimeout(() => el.classList.remove('show'), 2500);
+        btnValidar.addEventListener('click', entrarComChave);
+        inputChave.addEventListener('keydown', (e) => { if (e.key === 'Enter') entrarComChave(); });
+
+        btnSair.addEventListener('click', () => {
+            if (sessionCheckInterval) clearInterval(sessionCheckInterval);
+            telaPrincipal.classList.add('hidden');
+            telaChave.classList.remove('hidden');
+            inputChave.value = '';
+            resultadoGerado.classList.add('hidden');
+            setKeyStatus('', '');
+            try { localStorage.removeItem('qzz_key_data'); } catch (e) {}
+            inputChave.focus();
+        });
+
+        // ================================================================
+        // STREAMERS
+        // ================================================================
+        function renderStreamers() {
+            streamersGrid.innerHTML = '';
+            famosos.forEach((f, index) => {
+                const div = document.createElement('div');
+                div.className = 'streamer-card';
+                div.dataset.index = index;
+                div.innerHTML = `
+                        <div class="s-nome">${f.nome}</div>
+                        <div class="s-time">${f.time}</div>
+                        <span class="s-badge-pro">PRO</span>
+                    `;
+
+                div.addEventListener('click', function() {
+                    const idx = parseInt(this.dataset.index);
+                    abrirModal(idx);
+                });
+
+                streamersGrid.appendChild(div);
+            });
         }
 
-        // ==========================================
-        // INIT
-        // ==========================================
-        document.getElementById('loginBtn').addEventListener('click', async function() {
-            const key = document.getElementById('keyInput').value.trim();
-            if (!key) return showToast('Digite a key', 'error');
-            this.disabled = true;
-            this.textContent = 'Validando...';
-            const ok = await validateKey(key);
-            this.disabled = false;
-            this.textContent = 'Entrar';
-            if (ok) setTimeout(openApp, 500);
+        // ================================================================
+        // MODAL
+        // ================================================================
+        function abrirModal(index) {
+            const f = famosos[index];
+            streamerSelecionado = f;
+
+            mNome.textContent = f.nome;
+            mTime.textContent = f.time;
+            mTag.textContent = 'PRO PLAYER';
+
+            mGeral.textContent = f.geral;
+            mRedDot.textContent = f.redDot;
+            mMira2x.textContent = f.mira2x;
+            mMira4x.textContent = f.mira4x;
+            mSniper.textContent = f.sniper;
+            mFreeLook.textContent = f.freeLook;
+            mDpi.textContent = '460';
+
+            modalOverlay.classList.add('ativo');
+        }
+
+        modalClose.addEventListener('click', () => {
+            modalOverlay.classList.remove('ativo');
         });
 
-        document.getElementById('keyInput').addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') document.getElementById('loginBtn').click();
+        modalOverlay.addEventListener('click', function(e) {
+            if (e.target === this) {
+                modalOverlay.classList.remove('ativo');
+            }
         });
 
-        (async function init() {
-            if (await restoreSession()) setTimeout(openApp, 500);
+        mAplicar.addEventListener('click', function() {
+            if (!streamerSelecionado) return;
+            const f = streamerSelecionado;
+            const resultado = {
+                geral: f.geral,
+                redDot: f.redDot,
+                mira2x: f.mira2x,
+                mira4x: f.mira4x,
+                sniper: f.sniper,
+                freeLook: f.freeLook,
+                dpi: 460
+            };
+            exibirResultado(resultado);
+            modalOverlay.classList.remove('ativo');
+        });
+
+        // ================================================================
+        // GERAR
+        // ================================================================
+        function exibirResultado(resultado) {
+            ultimoResultado = resultado;
+            rGeral.textContent = resultado.geral;
+            rRedDot.textContent = resultado.redDot;
+            rMira2x.textContent = resultado.mira2x;
+            rMira4x.textContent = resultado.mira4x;
+            rSniper.textContent = resultado.sniper;
+            rFreeLook.textContent = resultado.freeLook;
+            rDpi.textContent = resultado.dpi || '420';
+
+            tipM4.textContent = Math.round(resultado.geral * 0.95);
+            tipM1887.textContent = Math.round(resultado.geral * 0.85);
+            tipAWM.textContent = Math.round(resultado.sniper);
+            tipSniper.textContent = Math.round(resultado.sniper * 0.7);
+
+            resultadoGerado.classList.remove('hidden');
+            resultadoGerado.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            try {
+                localStorage.setItem('qzz_last_sensi', JSON.stringify(resultado));
+            } catch (e) {}
+        }
+
+        btnGerar.addEventListener('click', () => {
+            const marcaSel = marca.value;
+            const modeloSel = modelo.value;
+            const sistemaSel = sistema.value;
+            const estiloSel = estilo.value;
+            const precisao = parseInt(precisaoSlider.value);
+
+            const resultado = gerarSensi(marcaSel, modeloSel, sistemaSel, estiloSel, precisao);
+            exibirResultado(resultado);
+        });
+
+        function carregarSalvo() {
+            try {
+                const data = localStorage.getItem('qzz_last_sensi');
+                if (data) {
+                    const resultado = JSON.parse(data);
+                    exibirResultado(resultado);
+                }
+            } catch (e) {}
+        }
+
+        // ================================================================
+        // COPIAR
+        // ================================================================
+        btnCopiar.addEventListener('click', () => {
+            if (!ultimoResultado) return;
+            const texto =
+                `> QZZ GEN\n> geral: ${ultimoResultado.geral}\n> red dot: ${ultimoResultado.redDot}\n> mira 2x: ${ultimoResultado.mira2x}\n> mira 4x: ${ultimoResultado.mira4x}\n> sniper: ${ultimoResultado.sniper}\n> free look: ${ultimoResultado.freeLook}\n> dpi: ${ultimoResultado.dpi || '420'}`;
+            navigator.clipboard.writeText(texto).then(() => {
+                btnCopiar.textContent = '| copiado!';
+                setTimeout(() => { btnCopiar.textContent = '| copiar config'; }, 2000);
+            }).catch(() => {
+                alert('copie manualmente:\n' + texto);
+            });
+        });
+
+        // ================================================================
+        // SALVAR
+        // ================================================================
+        btnSalvar.addEventListener('click', () => {
+            if (!ultimoResultado) return;
+            const nome = saveName.value.trim() || 'config ' + new Date().toLocaleTimeString();
+            const entry = {
+                nome: nome,
+                dados: ultimoResultado,
+                data: new Date().toISOString()
+            };
+            let historico = JSON.parse(localStorage.getItem('qzz_history') || '[]');
+            historico.unshift(entry);
+            if (historico.length > 10) historico = historico.slice(0, 10);
+            localStorage.setItem('qzz_history', JSON.stringify(historico));
+            renderHistory();
+            saveName.value = '';
+            alert('> config salva como "' + nome + '"');
+        });
+
+        // ================================================================
+        // HISTÓRICO
+        // ================================================================
+        function renderHistory() {
+            const historico = JSON.parse(localStorage.getItem('qzz_history') || '[]');
+            if (historico.length === 0) {
+                historyList.innerHTML =
+                    '<div style="color:#4a3030; font-size:13px;">nenhuma config salva ainda.</div>';
+                return;
+            }
+            historyList.innerHTML = '';
+            historico.forEach((item, idx) => {
+                const div = document.createElement('div');
+                div.className = 'h-item';
+                div.innerHTML = `
+                        <span class="h-name">${item.nome}</span>
+                        <span class="h-sensi">g:${item.dados.geral} | s:${item.dados.sniper}</span>
+                        <span class="h-load" data-idx="${idx}">[carregar]</span>
+                    `;
+                historyList.appendChild(div);
+            });
+            document.querySelectorAll('.h-load').forEach(el => {
+                el.addEventListener('click', function() {
+                    const idx = parseInt(this.dataset.idx);
+                    const historico = JSON.parse(localStorage.getItem('qzz_history') || '[]');
+                    if (historico[idx]) {
+                        exibirResultado(historico[idx].dados);
+                    }
+                });
+            });
+        }
+
+        // ================================================================
+        // COMPARTILHAR
+        // ================================================================
+        btnCompartilhar.addEventListener('click', () => {
+            if (!ultimoResultado) return;
+            const texto =
+                `> QZZ GEN\n> geral: ${ultimoResultado.geral}\n> red dot: ${ultimoResultado.redDot}\n> mira 2x: ${ultimoResultado.mira2x}\n> mira 4x: ${ultimoResultado.mira4x}\n> sniper: ${ultimoResultado.sniper}\n> free look: ${ultimoResultado.freeLook}\n> dpi: ${ultimoResultado.dpi || '420'}`;
+            if (navigator.share) {
+                navigator.share({ title: 'minha config qzz', text: texto }).catch(() => {});
+            } else {
+                navigator.clipboard.writeText(texto).then(() => {
+                    alert('| config copiada para compartilhar!');
+                }).catch(() => {
+                    alert('copie manualmente:\n' + texto);
+                });
+            }
+        });
+
+        // ================================================================
+        // MODELOS
+        // ================================================================
+        function atualizarModelos() {
+            const marcaAtual = marca.value;
+            const modelos = modelosPorMarca[marcaAtual] || ['outro'];
+            modelo.innerHTML = '';
+            modelos.forEach(m => {
+                const opt = document.createElement('option');
+                opt.value = m;
+                opt.textContent = nomesModelos[m] || m;
+                modelo.appendChild(opt);
+            });
+        }
+        marca.addEventListener('change', atualizarModelos);
+
+        // ================================================================
+        // PWA
+        // ================================================================
+        (function setupPWA() {
+            const svgIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+                <rect width="512" height="512" rx="80" fill="#0a0505" />
+                <circle cx="256" cy="256" r="140" fill="none" stroke="#dc2626" stroke-width="40" />
+                <circle cx="256" cy="256" r="70" fill="none" stroke="#dc2626" stroke-width="40" />
+                <line x1="256" y1="50" x2="256" y2="130" stroke="#dc2626" stroke-width="40" stroke-linecap="round" />
+                <line x1="256" y1="382" x2="256" y2="462" stroke="#dc2626" stroke-width="40" stroke-linecap="round" />
+                <line x1="50" y1="256" x2="130" y2="256" stroke="#dc2626" stroke-width="40" stroke-linecap="round" />
+                <line x1="382" y1="256" x2="462" y2="256" stroke="#dc2626" stroke-width="40" stroke-linecap="round" />
+                <line x1="105" y1="105" x2="160" y2="160" stroke="#dc2626" stroke-width="40" stroke-linecap="round" />
+                <line x1="352" y1="352" x2="407" y2="407" stroke="#dc2626" stroke-width="40" stroke-linecap="round" />
+                <line x1="407" y1="105" x2="352" y2="160" stroke="#dc2626" stroke-width="40" stroke-linecap="round" />
+                <line x1="160" y1="352" x2="105" y2="407" stroke="#dc2626" stroke-width="40" stroke-linecap="round" />
+                <circle cx="256" cy="256" r="30" fill="#dc2626" />
+            </svg>`;
+
+            const iconData = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgIcon)));
+
+            const manifest = {
+                name: 'QZZ GEN – Gerador de Sensi',
+                short_name: 'QZZ GEN',
+                description: 'Gerador de sensibilidade para Free Fire',
+                start_url: window.location.href.split('?')[0],
+                display: 'standalone',
+                background_color: '#0a0505',
+                theme_color: '#0a0505',
+                icons: [
+                    { src: iconData, sizes: '512x512', type: 'image/svg+xml' },
+                    { src: iconData, sizes: '192x192', type: 'image/svg+xml' }
+                ]
+            };
+
+            const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+            const manifestURL = URL.createObjectURL(manifestBlob);
+            document.getElementById('manifestLink').href = manifestURL;
+
+            const swCode = `
+                self.addEventListener('install', e => {
+                    e.waitUntil(self.skipWaiting());
+                });
+                self.addEventListener('activate', e => {
+                    e.waitUntil(self.clients.claim());
+                });
+                self.addEventListener('fetch', e => {
+                    e.respondWith(fetch(e.request).catch(() => {
+                        return new Response('offline', { status: 503 });
+                    }));
+                });
+            `;
+            const swBlob = new Blob([swCode], { type: 'application/javascript' });
+            const swURL = URL.createObjectURL(swBlob);
+
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register(swURL, { scope: '/' })
+                    .then(() => console.log('SW registrado para PWA'))
+                    .catch(err => console.log('SW erro:', err));
+            }
+
+            let deferredPrompt = null;
+
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                btnInstalar.classList.add('visivel');
+                btnInstalar.textContent = '📲 instalar app';
+            });
+
+            btnInstalar.addEventListener('click', async () => {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    const result = await deferredPrompt.userChoice;
+                    if (result.outcome === 'accepted') {
+                        console.log('App instalado!');
+                        btnInstalar.classList.remove('visivel');
+                    }
+                    deferredPrompt = null;
+                } else {
+                    alert('Abra este site no Chrome para instalar.');
+                }
+            });
+
+            window.addEventListener('appinstalled', () => {
+                btnInstalar.classList.remove('visivel');
+            });
+
+            if (navigator.userAgent.includes('iPhone') || navigator.userAgent.includes('iPad')) {
+                btnInstalar.classList.add('visivel');
+                btnInstalar.textContent = '📲 adicionar à tela inicial';
+                btnInstalar.addEventListener('click', () => {
+                    alert('Para instalar no iPhone/iPad:\n1. Toque no ícone de compartilhar\n2. Role para baixo e toque em "Adicionar à Tela de Início"');
+                });
+            }
+        })();
+
+        // ================================================================
+        // INICIALIZAÇÃO
+        // ================================================================
+        inputChave.focus();
+        atualizarModelos();
+
+        (async function revalidarAoIniciar() {
+            try {
+                const saved = JSON.parse(localStorage.getItem('qzz_key_data') || 'null');
+                if (!saved || !saved.key) return;
+                inputChave.value = saved.key;
+
+                const r = await validarChaveRemota(saved.key);
+                if (r.ok) {
+                    telaChave.classList.add('hidden');
+                    telaPrincipal.classList.remove('hidden');
+                    renderStreamers();
+                    carregarSalvo();
+                    renderHistory();
+                    iniciarWatcherDeSessao();
+                } else {
+                    try { localStorage.removeItem('qzz_key_data'); } catch (e) {}
+                    setKeyStatus('sua chave expirou, foi pausada ou é invalida. insira uma nova.', 'erro');
+                }
+            } catch (e) {}
         })();
     </script>
 </body>
